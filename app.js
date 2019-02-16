@@ -27,6 +27,16 @@ function create() {
     let allPosters = words.map(word => {
         return createPoster(word, this);
     });
+
+    // Put an empty object at the bottom of the screen to detect when a poster collides with it
+    // NOTE: The X position = 15 is a fix to adjust the position more precisely
+    let bottomCollider = this.physics.add.image(15, this.game.canvas.height).setImmovable(true);
+    bottomCollider.setSize(this.game.canvas.width, 30, false);
+    this.physics.add.collider(bottomCollider, allPosters, destroyPoster);
+}
+
+function destroyPoster(bottomCollider, poster) {
+    poster.destroy();
 }
 
 // A poster is an image and the specific word put together as a group
