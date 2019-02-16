@@ -25,7 +25,16 @@ function preload() {
 function create() {
     let words = ["cat", "dog", "house"];
     let allPosters = words.map(word => {
+        this.input.keyboard.createCombo(word);
         return createPoster(word, this);
+    });
+
+    // This will listen for a WHOLE word to be typed
+    this.input.keyboard.on('keycombomatch', function (event) {
+        let typedWord = event.keyCodes.map(keyCode => {
+            return String.fromCharCode(keyCode);
+        }).join("");
+        console.log(typedWord);
     });
 
     // Put an empty object at the bottom of the screen to detect when a poster collides with it
