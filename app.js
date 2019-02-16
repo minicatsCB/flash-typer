@@ -23,18 +23,28 @@ function preload() {
 }
 
 function create() {
+    let combos = {};
+
     let words = ["cat", "dog", "house"];
     let allPosters = words.map(word => {
         this.input.keyboard.createCombo(word);
-        return createPoster(word, this);
+        let poster = createPoster(word, this);
+
+        // Associate each combo with a poster.
+        // This way, we can destroy the corresponding poster when
+        // WHOLE a word is typed, this is, a combo is matched
+        combos[word] = poster;
+
+        return poster;
     });
 
     // This will listen for a WHOLE word to be typed
     this.input.keyboard.on('keycombomatch', function (event) {
         let typedWord = event.keyCodes.map(keyCode => {
             return String.fromCharCode(keyCode);
-        }).join("");
-        console.log(typedWord);
+        }).join("").toLowerCase();
+        
+        destroyPoster(0, combos[typedWord]);
     });
 
     // Put an empty object at the bottom of the screen to detect when a poster collides with it
