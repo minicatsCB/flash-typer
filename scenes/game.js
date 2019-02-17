@@ -1,6 +1,35 @@
 let wordsObject;
 let score = 0;
 let scoreText;
+let levels = {
+    easy: {
+        name: "easy",
+        posterVelocity: 50,
+        nextLevel: {
+            name: "medium",
+            neededScore: 30
+        },
+        lives: 3,
+        isLastLevel: false
+    },
+    medium: {
+        name: "medium",
+        posterVelocity: 100,
+        nextLevel: {
+            name: "difficult",
+            neededScore: 60
+        },
+        lives: 3,
+        isLastLevel: false
+    },
+    difficult: {
+        name: "difficult",
+        posterVelocity: 200,
+        lives: 3,
+        isLastLevel: true
+    }
+}
+let currentLevel = levels.easy;
 
 class Game extends Phaser.Scene {
     constructor() {
@@ -31,7 +60,7 @@ class Game extends Phaser.Scene {
         }
 
         // The text to be shown in the score area
-        scoreText = this.add.text(16, 16, 'Score: 0', {
+        scoreText = this.add.text(16, 16, 'Score: ' + score, {
             fontSize: '32px',
             fill: '#fff'
         });
@@ -56,6 +85,16 @@ class Game extends Phaser.Scene {
         let bottomCollider = this.physics.add.image(15, this.game.canvas.height).setImmovable(true);
         bottomCollider.setSize(this.game.canvas.width, 30, false);
         this.physics.add.collider(bottomCollider, allPosters, this.posterCollided);
+    }
+
+    update() {
+        if(!currentLevel.isLastLevel) {
+            if(score === currentLevel.nextLevel.neededScore) {
+                console.log("Going from " + currentLevel.name + " to " + currentLevel.nextLevel.name);
+                this.scene.start("game");
+                currentLevel = levels[currentLevel.nextLevel.name];
+            }
+        }
     }
 
     createWordsObject(words){
@@ -107,7 +146,7 @@ class Game extends Phaser.Scene {
 
         // Apply physics to the container
         that.physics.world.enable(container);
-        container.body.setVelocity(0, 30);
+        container.body.setVelocity(0, currentLevel.posterVelocity);
 
         return container;
     }
