@@ -17,6 +17,8 @@ let config = {
 };
 
 let game = new Phaser.Game(config);
+let score = 0;
+let scoreText;
 
 function preload() {
     this.load.image("paper", "assets/paper.png");
@@ -38,24 +40,34 @@ function create() {
         return poster;
     });
 
+    // The text to be shown in the score area
+    scoreText = this.add.text(16, 16, 'Score: 0', {
+        fontSize: '32px',
+        fill: '#fff'
+    });
+
     // This will listen for a WHOLE word to be typed
     this.input.keyboard.on('keycombomatch', function (event) {
         let typedWord = event.keyCodes.map(keyCode => {
             return String.fromCharCode(keyCode);
         }).join("").toLowerCase();
-        
-        destroyPoster(0, combos[typedWord]);
+
+        score += 10;
+        scoreText.setText("Score: " + score);
+        combos[typedWord].destroy();
     });
 
     // Put an empty object at the bottom of the screen to detect when a poster collides with it
     // NOTE: The X position = 15 is a fix to adjust the position more precisely
     let bottomCollider = this.physics.add.image(15, this.game.canvas.height).setImmovable(true);
     bottomCollider.setSize(this.game.canvas.width, 30, false);
-    this.physics.add.collider(bottomCollider, allPosters, destroyPoster);
+    this.physics.add.collider(bottomCollider, allPosters, posterCollided);
 }
 
-function destroyPoster(bottomCollider, poster) {
+function posterCollided(bottomCollider, poster) {
     poster.destroy();
+    score = (score <= 0) ? 0 : (score - 10);
+    scoreText.setText("Score: " + score);
 }
 
 // A poster is an image and the specific word put together as a group
