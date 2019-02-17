@@ -74,11 +74,12 @@ function createPoster(word, that) {
     posterImage.displayWidth = posterText.getBounds().width;
     posterImage.displayHeight = posterText.getBounds().height;
 
-    // Put the poster (image + text) randomly at the canvas top
+    // Put the poster randomly at the canvas top
     let randomX = Phaser.Math.Between(0, that.game.canvas.width);
+    let randomY = Phaser.Math.Between(-(posterImage.displayHeight / 2), -(posterImage.displayHeight) * 2);
 
-    // Use a contanier to be able to move both image and text at the same time
-    let container = that.add.container(randomX, -(posterImage.displayHeight/2), [posterImage, posterText]);
+    // Create the poster itself by grouping both image and text in a "container"
+    let container = that.add.container(randomX, randomY, [posterImage, posterText]);
 
     // Set the size of the container to the same size of the text (same as the image's)
     container.setSize(posterImage.displayWidth, posterImage.displayHeight);
