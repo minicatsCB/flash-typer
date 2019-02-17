@@ -30,9 +30,19 @@ class Main extends Phaser.Scene {
             fill: '#fff'
         }).setOrigin(0.5, 0.5);
 
-        this.input.manager.enabled = true;
-        this.input.once('pointerdown', function() {
-            this.scene.start('game');
-        }, this);
+        this.input.keyboard.createCombo("play");
+        this.input.keyboard.createCombo("ranking");
+
+        this.input.keyboard.on('keycombomatch', event => {
+            let typedWord = event.keyCodes.map(keyCode => {
+                return String.fromCharCode(keyCode);
+            }).join("").toLowerCase();
+
+            if(typedWord === "play") {
+                this.scene.start('game');
+            } else if (typedWord === "ranking") {
+                this.scene.start('ranking');
+            }
+        });
     }
 }
