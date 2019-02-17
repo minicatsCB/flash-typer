@@ -17,6 +17,7 @@ let config = {
 };
 
 let game = new Phaser.Game(config);
+let wordsObject;
 let score = 0;
 let scoreText;
 
@@ -25,10 +26,11 @@ function preload() {
 }
 
 function create() {
-    let combos = {};
-
     let words = ["cat", "dog", "house"];
-    let allPosters = words.map(word => {
+    wordsObject = createWordsObject(words);
+    let allPosters = [];
+    let combos = {};
+    for(word in wordsObject) {
         this.input.keyboard.createCombo(word);
         let poster = createPoster(word, this);
 
@@ -37,8 +39,8 @@ function create() {
         // WHOLE a word is typed, this is, a combo is matched
         combos[word] = poster;
 
-        return poster;
-    });
+        allPosters.push(poster);
+    }
 
     // The text to be shown in the score area
     scoreText = this.add.text(16, 16, 'Score: 0', {
@@ -52,9 +54,13 @@ function create() {
             return String.fromCharCode(keyCode);
         }).join("").toLowerCase();
 
-        score += 10;
-        scoreText.setText("Score: " + score);
-        combos[typedWord].destroy();
+        // The match is only valid if the word hasn't been typed yet (it's alive)
+        if(wordsObject[typedWord].isAlive === true) {
+            wordsObject[typedWord].isAlive = false;
+            combos[typedWord].destroy();
+            score += 10;
+            scoreText.setText("Score: " + score);
+        }
     });
 
     // Put an empty object at the bottom of the screen to detect when a poster collides with it
@@ -64,7 +70,22 @@ function create() {
     this.physics.add.collider(bottomCollider, allPosters, posterCollided);
 }
 
+function createWordsObject(words){
+    // If the word has already been typed, then it is NOT alive (false)
+    // If the word has not been typed yed, then it is alive (true). Default value
+    let obj = {};
+    for(word of words) {
+        obj[word] = { isAlive: true };
+    }
+
+    return obj;
+}
+
 function posterCollided(bottomCollider, poster) {
+    // NOTE: We know it's position 1 of the array because when we created
+    // the poster container, we added the image first and the text secondly
+    let collidedWord = poster.list[1].text;
+    wordsObject[collidedWord].isAlive = false;
     poster.destroy();
     score = (score <= 0) ? 0 : (score - 10);
     scoreText.setText("Score: " + score);
