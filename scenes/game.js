@@ -1,6 +1,8 @@
 let wordsObject;
 let score = 0;
 let scoreText;
+let lives = 3;
+let livesText;
 let levels = {
     easy: {
         name: "easy",
@@ -9,7 +11,6 @@ let levels = {
             name: "medium",
             neededScore: 30
         },
-        lives: 3,
         isLastLevel: false
     },
     medium: {
@@ -19,13 +20,11 @@ let levels = {
             name: "difficult",
             neededScore: 60
         },
-        lives: 3,
         isLastLevel: false
     },
     difficult: {
         name: "difficult",
         posterVelocity: 200,
-        lives: 3,
         isLastLevel: true
     }
 }
@@ -65,6 +64,12 @@ class Game extends Phaser.Scene {
             fill: '#fff'
         });
 
+        // The text to be shown in the lives area
+        livesText = this.add.text(160, 16, 'Lives: ' + lives, {
+            fontSize: '32px',
+            fill: '#fff'
+        });
+
         // This will listen for a WHOLE word to be typed
         this.input.keyboard.on('keycombomatch', function (event) {
             let typedWord = event.keyCodes.map(keyCode => {
@@ -88,13 +93,19 @@ class Game extends Phaser.Scene {
     }
 
     update() {
-        if(!currentLevel.isLastLevel) {
-            if(score === currentLevel.nextLevel.neededScore) {
-                console.log("Going from " + currentLevel.name + " to " + currentLevel.nextLevel.name);
-                this.scene.start("game");
-                currentLevel = levels[currentLevel.nextLevel.name];
+        if (lives > 0) {
+            if(!currentLevel.isLastLevel) {
+                if(score === currentLevel.nextLevel.neededScore) {
+                    console.log("Going from " + currentLevel.name + " to " + currentLevel.nextLevel.name);
+                    this.scene.start("game");
+                    currentLevel = levels[currentLevel.nextLevel.name];
+                }
             }
+        } else {
+            console.log("Game Over");
+            this.physics.pause();
         }
+
     }
 
     createWordsObject(words){
@@ -114,8 +125,8 @@ class Game extends Phaser.Scene {
         let collidedWord = poster.list[1].text;
         wordsObject[collidedWord].isAlive = false;
         poster.destroy();
-        score = (score <= 0) ? 0 : (score - 10);
-        scoreText.setText("Score: " + score);
+        lives = (lives <= 0) ? 0 : --lives;
+        livesText.setText("Lives: " + lives);
     }
 
     // A poster is an image and the specific word put together as a group
