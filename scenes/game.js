@@ -1,5 +1,6 @@
 let wordsObject = {};
 let combos = {};
+let posterCreationInterval;
 let score = 0;
 let scoreText;
 let lives = 3;
@@ -51,8 +52,9 @@ class Game extends Phaser.Scene {
 
     create() {
         let iter = this.createPoster(this);
-        setInterval(() => {
-            console.log(iter.next());
+        clearInterval(posterCreationInterval);  // Stop any previous started interval
+        posterCreationInterval = setInterval(() => {
+            iter.next();
         }, 1000);
 
         // The text to be shown in the score area
@@ -98,6 +100,10 @@ class Game extends Phaser.Scene {
             }
         } else {
             console.log("Game Over");
+
+            // Stop creating posters
+            clearInterval(posterCreationInterval);
+
             this.physics.pause();
         }
 
