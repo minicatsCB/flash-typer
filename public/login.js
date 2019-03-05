@@ -1,9 +1,9 @@
 function initFirebase(){
-  var config = {
-    apiKey: "yourApiKey",
-    authDomain: "yourAuthDomain",
-    databaseURL: "yourDatabaseURL",
-    projectId: "yourProjectId",
+    var config = {
+      apiKey: "yourApiKey",
+      authDomain: "yourAuthDomain",
+      databaseURL: "yourDatabaseURL",
+      projectId: "yourProjectId",
   };
 
   firebase.initializeApp(config);

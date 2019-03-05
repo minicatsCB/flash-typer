@@ -9,7 +9,7 @@ let config = {
             debug: true
         }
     },
-    scene: [Main, Game, Ranking]
+    scene: [Main]
 };
 
 let game = new Phaser.Game(config);

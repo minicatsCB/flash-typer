@@ -72,5 +72,6 @@ class Main extends Phaser.Scene {
 
     enterButtonClickedState() {
         console.log("Button pointer down!");
+        signInWithGithub();
     }
 }
