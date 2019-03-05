@@ -48,7 +48,7 @@ class Main extends Phaser.Scene {
             }
         });
 
-        loginButton = this.add.text(rankingText.x, rankingText.y + 100, "Login with Twitter", {
+        loginButton = this.add.text(rankingText.x, rankingText.y + 100, "Login with Github", {
             fill: "#ffffff"
         }).setOrigin(0.5, 0.5);;
 
