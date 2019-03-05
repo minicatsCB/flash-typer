@@ -1,4 +1,5 @@
 let loginButton;
+let logoutButton;
 
 class Main extends Phaser.Scene {
     constructor() {
@@ -55,23 +56,37 @@ class Main extends Phaser.Scene {
         loginButton.setInteractive({ useHandCursor: true });
         loginButton.on("pointerover", this.enterButtonHoverState);
         loginButton.on("pointerout", this.enterButtonRestState);
-        loginButton.on("pointerdown", this.enterButtonClickedState);
+        loginButton.on("pointerdown", this.login);
+
+        logoutButton = this.add.text(loginButton.x, loginButton.y + 50, "Logout from Github", {
+            fill: "#ffffff"
+        }).setOrigin(0.5, 0.5);;
+
+        logoutButton.setInteractive({ useHandCursor: true });
+        logoutButton.on("pointerover", this.enterButtonHoverState);
+        logoutButton.on("pointerout", this.enterButtonRestState);
+        logoutButton.on("pointerdown", this.logout);
     }
 
     enterButtonHoverState() {
-        loginButton.setStyle({
+        this.setStyle({
             fill: "#ff0000"
         });
     }
 
     enterButtonRestState() {
-        loginButton.setStyle({
+        this.setStyle({
             fill: "#ffffff"
         });
     }
 
-    enterButtonClickedState() {
-        console.log("Button pointer down!");
+    login() {
+        console.log("Sign in with Github");
         signInWithGithub();
+    }
+
+    logout() {
+        console.log("Sign out from Github");
+        signOut();
     }
 }
