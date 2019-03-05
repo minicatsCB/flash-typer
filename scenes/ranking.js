@@ -2,6 +2,8 @@ const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;
 const COLOR_DARK = 0x260e04;
 
+let loginButton;
+
 class Ranking extends Phaser.Scene {
     constructor() {
         super({
@@ -94,6 +96,31 @@ class Ranking extends Phaser.Scene {
             .setOrigin(0.5, 0)
             .layout()
             .drawBounds(this.add.graphics(), 0xff0000);
+
+            loginButton = this.add.text(rankingText.x, rankingText.y + 30, "Login with Twitter", {
+                fill: "#ffffff"
+            }).setOrigin(0.5, 0.5);;
+
+            loginButton.setInteractive({ useHandCursor: true });
+            loginButton.on("pointerover", this.enterButtonHoverState);
+            loginButton.on("pointerout", this.enterButtonRestState);
+            loginButton.on("pointerdown", this.enterButtonClickedState);
+    }
+
+    enterButtonHoverState() {
+        loginButton.setStyle({
+            fill: "#ff0000"
+        });
+    }
+
+    enterButtonRestState() {
+        loginButton.setStyle({
+            fill: "#ffffff"
+        });
+    }
+
+    enterButtonClickedState() {
+        console.log("Button pointer down!");
     }
 
     update() {}
