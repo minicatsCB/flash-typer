@@ -1,3 +1,5 @@
+let loginButton;
+
 class Main extends Phaser.Scene {
     constructor() {
         super({
@@ -45,5 +47,30 @@ class Main extends Phaser.Scene {
                 this.scene.start('ranking');
             }
         });
+
+        loginButton = this.add.text(rankingText.x, rankingText.y + 100, "Login with Twitter", {
+            fill: "#ffffff"
+        }).setOrigin(0.5, 0.5);;
+
+        loginButton.setInteractive({ useHandCursor: true });
+        loginButton.on("pointerover", this.enterButtonHoverState);
+        loginButton.on("pointerout", this.enterButtonRestState);
+        loginButton.on("pointerdown", this.enterButtonClickedState);
+    }
+
+    enterButtonHoverState() {
+        loginButton.setStyle({
+            fill: "#ff0000"
+        });
+    }
+
+    enterButtonRestState() {
+        loginButton.setStyle({
+            fill: "#ffffff"
+        });
+    }
+
+    enterButtonClickedState() {
+        console.log("Button pointer down!");
     }
 }
