@@ -30,5 +30,9 @@ function signInWithGithub() {
     });
 }
 
+function signOut() {
+    firebase.auth().signOut();
+}
+
 initFirebase();
 setAuthStateObserver();
