@@ -21,5 +21,14 @@ function authStateObserver(user) {
   }
 }
 
+function signInWithGithub() {
+    var provider = new firebase.auth.GithubAuthProvider();
+    firebase.auth().signInWithPopup(provider).then(function(result) {
+        console.log("User signed up with Github succesfully");
+    }).catch(function(error) {
+        console.log("An error ocurred while signing in with Github. Error:", error);
+    });
+}
+
 initFirebase();
 setAuthStateObserver();
