@@ -34,5 +34,19 @@ function signOut() {
     firebase.auth().signOut();
 }
 
+function setDatabaseListeners() {
+    firebase.database().ref().child("users").on('child_added', addUserToList);
+    firebase.database().ref().child("users").on('child_removed', removeUserFromList);
+}
+
+function addUserToList(user) {
+    console.log("Adding user to database");
+}
+
+function removeUserFromList(user){
+    console.log("Removing user from database");
+}
+
 initFirebase();
 setAuthStateObserver();
+setDatabaseListeners();
