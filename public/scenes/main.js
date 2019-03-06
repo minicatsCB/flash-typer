@@ -1,5 +1,6 @@
 let loginButton;
 let logoutButton;
+let loginBadge;
 
 class Main extends Phaser.Scene {
     constructor() {
@@ -9,7 +10,11 @@ class Main extends Phaser.Scene {
     }
 
     preload() {
-
+        this.load.scenePlugin({
+            key: 'rexuiplugin',
+            url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/plugins/dist/rexuiplugin.min.js',
+            sceneKey: 'rexUI'
+        });
     }
 
     create() {
@@ -66,6 +71,19 @@ class Main extends Phaser.Scene {
         logoutButton.on("pointerover", this.enterButtonHoverState);
         logoutButton.on("pointerout", this.enterButtonRestState);
         logoutButton.on("pointerdown", this.logout);
+
+        loginBadge = this.createTextBox(this, 10, this.game.canvas.height - 100);
+    }
+
+    update() {
+        // ÑapaScript®
+        // Surely there is better way, but currently I don't know any
+        // to subscribe to an observable declared in another script
+        // This is like a "manual" listener or subscription (checking with a loop)
+        if(hasAuthStateChanged) {
+            loginBadge.start(loggedInUsername, 50);
+            hasAuthStateChanged = false;
+        }
     }
 
     enterButtonHoverState() {
@@ -88,5 +106,54 @@ class Main extends Phaser.Scene {
     logout() {
         console.log("Sign out from Github");
         signOut();
+    }
+
+    createTextBox(scene, x, y) {
+        let textBox = scene.rexUI.add.textBox({
+                x: x,
+                y: y,
+
+                background: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, COLOR_PRIMARY)
+                    .setStrokeStyle(2, COLOR_LIGHT),
+
+                text: scene.add.text(0, 0, loggedInUsername, {
+                    fill: "#ffffff"
+                }),
+
+                action: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, COLOR_DARK).setAlpha(0),
+
+                space: {
+                    left: 20,
+                    right: 20,
+                    top: 20,
+                    bottom: 20,
+                    icon: 10,
+                    text: 10,
+                }
+            })
+            .setOrigin(0)
+            .layout();
+
+        textBox
+            .setInteractive()
+            .on('pointerdown', function() {
+                if (this.isTyping) {
+                    this.stop(true);
+                }
+            }, textBox)
+            .on('pageend', function() {
+                let icon = this.getElement('action').setAlpha(1);
+                icon.y -= 30;
+                let tween = scene.tweens.add({
+                    targets: icon,
+                    y: '+=30',
+                    ease: 'Cubic',
+                    duration: 500,
+                    repeat: 0,
+                    yoyo: false
+                });
+            }, textBox)
+
+        return textBox;
     }
 }
