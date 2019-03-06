@@ -47,7 +47,7 @@ class Game extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("paper", "assets/paper.png");
+        this.load.image("paper", "../assets/paper.png");
     }
 
     create() {
