@@ -14,15 +14,15 @@ function setAuthStateObserver() {
 }
 
 function authStateObserver(user) {
-  hasAuthStateChanged = true;
+  authStateData.hasAuthStateChanged = true;
   if (user) {
-      loggedInUsername = user.displayName;
-      isUserLoggedIn = true;
-      console.log("User is signed in as:", loggedInUsername);
+      authStateData.loggedInUsername = user.displayName;
+      authStateData.isUserLoggedIn = true;
+      console.log("User is signed in as:", authStateData.loggedInUsername);
   } else {
-      loggedInUsername = "Not logged in";
-      isUserLoggedIn = false;
-      console.log("User is signed out as:", loggedInUsername);
+      authStateData.loggedInUsername = "Not logged in";
+      authStateData.isUserLoggedIn = false;
+      console.log("User is signed out as:", authStateData.loggedInUsername);
   }
 }
 
@@ -39,7 +39,7 @@ function signInWithGithub() {
             saveUserDataInDatabase(userData);
         }
 
-        loggedInUsername = result.additionalUserInfo.profile.login;
+        authStateData.loggedInUsername = result.additionalUserInfo.profile.login;
     }).catch(function(error) {
         console.log("An error ocurred while signing in with Github. Error:", error);
     });
@@ -81,9 +81,11 @@ function removeUserFromList(user){
     console.log("Removing user from database");
 }
 
-let loggedInUsername;
-let isUserLoggedIn = false;
-let hasAuthStateChanged = false;
+let authStateData = {
+    loggedInUsername: "Not logged in",
+    isUserLoggedIn: false,
+    hasAuthStateChanged: false
+}
 
 initFirebase();
 setAuthStateObserver();

@@ -84,11 +84,11 @@ class Main extends Phaser.Scene {
         // Surely there is better way, but currently I don't know any
         // to subscribe to an observable declared in another script
         // This is like a "manual" listener or subscription (checking with a loop)
-        if(hasAuthStateChanged) {
-            loginBadge.start(loggedInUsername, 50);
-            loginButton.visible = isUserLoggedIn ? false : true;
-            logoutButton.visible = isUserLoggedIn ? true : false;
-            hasAuthStateChanged = false;
+        if(authStateData.hasAuthStateChanged) {
+            loginBadge.start(authStateData.loggedInUsername, 50);
+            loginButton.visible = authStateData.isUserLoggedIn ? false : true;
+            logoutButton.visible = authStateData.isUserLoggedIn ? true : false;
+            authStateData.hasAuthStateChanged = false;
         }
     }
 
@@ -122,7 +122,7 @@ class Main extends Phaser.Scene {
                 background: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, COLOR_PRIMARY)
                     .setStrokeStyle(2, COLOR_LIGHT),
 
-                text: scene.add.text(0, 0, loggedInUsername, {
+                text: scene.add.text(0, 0, authStateData.loggedInUsername, {
                     fill: "#ffffff"
                 }),
 
