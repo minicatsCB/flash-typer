@@ -17,9 +17,11 @@ function authStateObserver(user) {
   hasAuthStateChanged = true;
   if (user) {
       loggedInUsername = user.displayName;
+      isUserLoggedIn = true;
       console.log("User is signed in as:", loggedInUsername);
   } else {
       loggedInUsername = "Not logged in";
+      isUserLoggedIn = false;
       console.log("User is signed out as:", loggedInUsername);
   }
 }
@@ -80,6 +82,7 @@ function removeUserFromList(user){
 }
 
 let loggedInUsername;
+let isUserLoggedIn = false;
 let hasAuthStateChanged = false;
 
 initFirebase();

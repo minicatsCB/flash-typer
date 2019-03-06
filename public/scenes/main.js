@@ -63,7 +63,9 @@ class Main extends Phaser.Scene {
         loginButton.on("pointerout", this.enterButtonRestState);
         loginButton.on("pointerdown", this.login);
 
-        logoutButton = this.add.text(loginButton.x, loginButton.y + 50, "Logout from Github", {
+        loginButton.visible = false;
+
+        logoutButton = this.add.text(rankingText.x, rankingText.y + 100, "Logout from Github", {
             fill: "#ffffff"
         }).setOrigin(0.5, 0.5);;
 
@@ -71,6 +73,8 @@ class Main extends Phaser.Scene {
         logoutButton.on("pointerover", this.enterButtonHoverState);
         logoutButton.on("pointerout", this.enterButtonRestState);
         logoutButton.on("pointerdown", this.logout);
+
+        logoutButton.visible = false;
 
         loginBadge = this.createTextBox(this, 10, this.game.canvas.height - 100);
     }
@@ -82,6 +86,8 @@ class Main extends Phaser.Scene {
         // This is like a "manual" listener or subscription (checking with a loop)
         if(hasAuthStateChanged) {
             loginBadge.start(loggedInUsername, 50);
+            loginButton.visible = isUserLoggedIn ? false : true;
+            logoutButton.visible = isUserLoggedIn ? true : false;
             hasAuthStateChanged = false;
         }
     }
