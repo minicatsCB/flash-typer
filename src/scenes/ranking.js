@@ -35,7 +35,7 @@ class Ranking extends Phaser.Scene {
             score: 650,
             color: 0xffffff
         };
-        
+
         let p3 = {
             username: "bananaSplit",
             score: 140,
@@ -98,3 +98,5 @@ class Ranking extends Phaser.Scene {
 
     update() {}
 }
+
+export default Ranking;

@@ -1,3 +1,5 @@
+import paper from "../assets/paper.png";
+
 let wordsObject = {};
 let combos = {};
 let posterCreationInterval;
@@ -47,7 +49,8 @@ class Game extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("paper", "../assets/paper.png");
+        console.log("game preload");
+        this.load.image("paper", paper);
     }
 
     create() {
@@ -164,3 +167,5 @@ class Game extends Phaser.Scene {
         }
     }
 }
+
+export default Game;

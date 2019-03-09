@@ -1,20 +1,24 @@
-let loginButton;
-let logoutButton;
-let loginBadge;
+import Login from "../login.js";
+
+const COLOR_PRIMARY = 0x4e342e;
+const COLOR_LIGHT = 0x7b5e57;
+const COLOR_DARK = 0x260e04;
 
 class Main extends Phaser.Scene {
     constructor() {
         super({
             key: 'main'
         });
+
+        this.loginSrv = new Login();
+
+        this.loginButton;
+        this.logoutButton;
+        this.loginBadge;
     }
 
     preload() {
-        this.load.scenePlugin({
-            key: 'rexuiplugin',
-            url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/plugins/dist/rexuiplugin.min.js',
-            sceneKey: 'rexUI'
-        });
+
     }
 
     create() {
@@ -54,29 +58,29 @@ class Main extends Phaser.Scene {
             }
         });
 
-        loginButton = this.add.text(rankingText.x, rankingText.y + 100, "Login with Github", {
+        this.loginButton = this.add.text(rankingText.x, rankingText.y + 100, "Login with Github", {
             fill: "#ffffff"
         }).setOrigin(0.5, 0.5);;
 
-        loginButton.setInteractive({ useHandCursor: true });
-        loginButton.on("pointerover", this.enterButtonHoverState);
-        loginButton.on("pointerout", this.enterButtonRestState);
-        loginButton.on("pointerdown", this.login);
+        this.loginButton.setInteractive({ useHandCursor: true });
+        this.loginButton.on("pointerover", this.enterButtonHoverState);
+        this.loginButton.on("pointerout", this.enterButtonRestState);
+        this.loginButton.on("pointerdown", this.loginSrv.signInWithGithub);
 
-        loginButton.visible = false;
+        this.loginButton.visible = false;
 
-        logoutButton = this.add.text(rankingText.x, rankingText.y + 100, "Logout from Github", {
+        this.logoutButton = this.add.text(rankingText.x, rankingText.y + 100, "Logout from Github", {
             fill: "#ffffff"
         }).setOrigin(0.5, 0.5);;
 
-        logoutButton.setInteractive({ useHandCursor: true });
-        logoutButton.on("pointerover", this.enterButtonHoverState);
-        logoutButton.on("pointerout", this.enterButtonRestState);
-        logoutButton.on("pointerdown", this.logout);
+        this.logoutButton.setInteractive({ useHandCursor: true });
+        this.logoutButton.on("pointerover", this.enterButtonHoverState);
+        this.logoutButton.on("pointerout", this.enterButtonRestState);
+        this.logoutButton.on("pointerdown", this.loginSrv.signOut);
 
-        logoutButton.visible = false;
+        this.logoutButton.visible = false;
 
-        loginBadge = this.createTextBox(this, 10, this.game.canvas.height - 100);
+        this.loginBadge = this.createTextBox(this, 10, this.game.canvas.height - 100);
     }
 
     update() {
@@ -84,11 +88,11 @@ class Main extends Phaser.Scene {
         // Surely there is better way, but currently I don't know any
         // to subscribe to an observable declared in another script
         // This is like a "manual" listener or subscription (checking with a loop)
-        if(authStateData.hasAuthStateChanged) {
-            loginBadge.start(authStateData.loggedInUsername, 50);
-            loginButton.visible = authStateData.isUserLoggedIn ? false : true;
-            logoutButton.visible = authStateData.isUserLoggedIn ? true : false;
-            authStateData.hasAuthStateChanged = false;
+        if(this.loginSrv.hasAuthStateChanged) {
+            this.loginBadge.start(this.loginSrv.loggedInUsername, 50);
+            this.loginButton.visible = this.loginSrv.isUserLoggedIn ? false : true;
+            this.logoutButton.visible = this.loginSrv.isUserLoggedIn ? true : false;
+            this.loginSrv.hasAuthStateChanged = false;
         }
     }
 
@@ -104,16 +108,6 @@ class Main extends Phaser.Scene {
         });
     }
 
-    login() {
-        console.log("Sign in with Github");
-        signInWithGithub();
-    }
-
-    logout() {
-        console.log("Sign out from Github");
-        signOut();
-    }
-
     createTextBox(scene, x, y) {
         let textBox = scene.rexUI.add.textBox({
                 x: x,
@@ -122,7 +116,7 @@ class Main extends Phaser.Scene {
                 background: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, COLOR_PRIMARY)
                     .setStrokeStyle(2, COLOR_LIGHT),
 
-                text: scene.add.text(0, 0, authStateData.loggedInUsername, {
+                text: scene.add.text(0, 0, this.loginSrv.loggedInUsername, {
                     fill: "#ffffff"
                 }),
 
@@ -163,3 +157,5 @@ class Main extends Phaser.Scene {
         return textBox;
     }
 }
+
+export default Main;
