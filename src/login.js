@@ -10,11 +10,9 @@ class Login {
             this.initFirebase();
             this.setAuthStateObserver();
             this.setDatabaseListeners();
-            
+
             instance = this;
         }
-
-        this.time = new Date();
 
         return instance;
     }
