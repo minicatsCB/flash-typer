@@ -59,7 +59,7 @@ class Login {
     authStateObserver(user) {
         this.hasAuthStateChanged = true;
         if (user) {
-            this.loggedInUsername = user.displayName;
+            this.loggedInUsername = user.displayName|| "No name";
             this.isUserLoggedIn = true;
             console.log("User is signed in as:", this.loggedInUsername);
         } else {
