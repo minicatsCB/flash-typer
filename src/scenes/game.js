@@ -1,4 +1,5 @@
 import paper from "../assets/paper.png";
+import background from "../assets/cartoon.jpg";
 
 let wordsObject = {};
 let combos = {};
@@ -49,11 +50,13 @@ class Game extends Phaser.Scene {
     }
 
     preload() {
-        console.log("game preload");
         this.load.image("paper", paper);
+        this.load.image("backgound", background);
     }
 
     create() {
+        this.add.image(500, 500, 'backgound');
+
         let iter = this.createPoster(this);
         clearInterval(posterCreationInterval);  // Stop any previous started interval
         posterCreationInterval = setInterval(() => {
