@@ -6,10 +6,9 @@ import background from "../assets/cartoon.jpg";
 let wordsObject = {};
 let combos = {};
 let posterCreationInterval;
-let score = 0;
 let scoreText;
-let lives = 3;
 let livesText;
+let lives = 3;
 let bottomCollider;
 
 class Game extends Phaser.Scene {
@@ -37,7 +36,7 @@ class Game extends Phaser.Scene {
         }, 1000);
 
         // The text to be shown in the score area
-        scoreText = this.add.text(16, 16, 'Score: ' + score, {
+        scoreText = this.add.text(16, 16, 'Score: ' + this.gameService.getCurrentScore(), {
             fontSize: '32px',
             fill: '#fff'
         });
@@ -49,7 +48,7 @@ class Game extends Phaser.Scene {
         });
 
         // This will listen for a WHOLE word to be typed
-        this.input.keyboard.on('keycombomatch', function (event) {
+        this.input.keyboard.on('keycombomatch', (event) => {
             let typedWord = event.keyCodes.map(keyCode => {
                 return String.fromCharCode(keyCode);
             }).join("").toLowerCase();
@@ -58,8 +57,9 @@ class Game extends Phaser.Scene {
             if(wordsObject[typedWord].isAlive === true) {
                 wordsObject[typedWord].isAlive = false;
                 combos[typedWord].destroy();
-                score += 10;
-                scoreText.setText("Score: " + score);
+                let updatedScore = this.gameService.getCurrentScore() + 10;
+                this.gameService.setScore(updatedScore);
+                scoreText.setText("Score: " + this.gameService.getCurrentScore());
             }
         });
 
@@ -71,7 +71,7 @@ class Game extends Phaser.Scene {
     update() {
         if (lives > 0) {
             if(!this.currentLevel.isLastLevel) {
-                if(score === this.currentLevel.nextLevel.neededScore) {
+                if(this.gameService.getCurrentScore() === this.currentLevel.nextLevel.neededScore) {
                     console.log("Going from " + this.currentLevel.name + " to " + this.currentLevel.nextLevel.name);
                     this.scene.start("game");
                     this.currentLevel = this.gameService.getNextLevel(this.currentLevel);

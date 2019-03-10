@@ -32,6 +32,8 @@ class GameService {
                 isLastLevel: true
             }
         }
+
+        this.score = 0;
     }
 
     getLevelByDifficulty(difficulty) {
@@ -40,6 +42,14 @@ class GameService {
 
     getNextLevel(currentLevel) {
         return this.levels[currentLevel.nextLevel.name];
+    }
+
+    getCurrentScore() {
+        return this.score;
+    }
+
+    setScore(score) {
+        this.score = score;
     }
 }
 
