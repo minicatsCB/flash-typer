@@ -1,3 +1,5 @@
+import GameService from "../gameService.js";
+
 import paper from "../assets/paper.png";
 import background from "../assets/cartoon.jpg";
 
@@ -9,44 +11,15 @@ let scoreText;
 let lives = 3;
 let livesText;
 let bottomCollider;
-let easyWords = [ "cat", "ghost", "cow", "bug", "snake", "lips", "socks", "coat", "heart", "kite", "milk", "skateboard", "apple", "mouse", "star", "whale", "hippo", "face", "spoon", "sun", "flower", "banana", "book", "light", "apple", "smile", "shoe", "hat", "dog", "duck", "bird", "person", "ball", "nose", "jacket", "beach", "cookie", "drum", "worm", "cup", "pie", "snowflake", "jar", "tree", "slide", "swing", "water", "ocean", "mouth", "eyes", "boy", "girl", "house", "bed", "shirt", "egg", "cheese", "circle"];
-let mediumWords = [ "horse", "trip", "round", "park", "state", "baseball", "dominoes", "hockey", "whisk", "mattress", "circus", "cowboy", "skate", "thief", "spring", "toast", "half", "door", "backbone", "treasure", "pirate", "whistle", "coal", "photograph", "aircraft", "key", "frog", "pinwheel", "battery", "password", "electricity", "teapot", "nature", "outside", "spare", "platypus", "song", "bomb", "garbage", "ski", "palace", "queen", "computer", "lawnmower", "cake", "mailman", "bicycle", "lightsaber", "deep", "shallow", "America", "bowtie", "wax", "music"];
-let difficultWords = [ "snag", "mime", "hail", "password", "newsletter", "dripping", "catalog", "laser", "myth", "hydrogen", "darkness", "vegetarian", "ditch", "neighborhood", "retail", "fabric", "jazz", "commercial", "double", "landscape", "jungle", "peasant", "clog", "bookend", "pharmacist", "ringleader", "diagonal", "dorsal", "macaroni", "yolk", "shrew", "wobble", "dizzy", "drawback", "mirror", "migrate", "dashboard", "download", "important", "bargain", "scream", "professor", "landscape", "husband", "comfy", "biscuit", "rubber", "exercise", "chestnut", "glitter", "fireside", "logo", "barber", "drought", "bargain", "professor", "vitamin"] ;
-let levels = {
-    easy: {
-        name: "easy",
-        posterVelocity: 50,
-        wordList: easyWords,
-        nextLevel: {
-            name: "medium",
-            neededScore: 30
-        },
-        isLastLevel: false
-    },
-    medium: {
-        name: "medium",
-        posterVelocity: 100,
-        wordList: mediumWords,
-        nextLevel: {
-            name: "difficult",
-            neededScore: 60
-        },
-        isLastLevel: false
-    },
-    difficult: {
-        name: "difficult",
-        posterVelocity: 200,
-        wordList: difficultWords,
-        isLastLevel: true
-    }
-}
-let currentLevel = levels.easy;
 
 class Game extends Phaser.Scene {
     constructor() {
         super({
             key: 'game'
         });
+
+        this.gameService = new GameService();
+        this.currentLevel = this.gameService.getLevelByDifficulty("easy");
     }
 
     preload() {
@@ -97,15 +70,16 @@ class Game extends Phaser.Scene {
 
     update() {
         if (lives > 0) {
-            if(!currentLevel.isLastLevel) {
-                if(score === currentLevel.nextLevel.neededScore) {
-                    console.log("Going from " + currentLevel.name + " to " + currentLevel.nextLevel.name);
+            if(!this.currentLevel.isLastLevel) {
+                if(score === this.currentLevel.nextLevel.neededScore) {
+                    console.log("Going from " + this.currentLevel.name + " to " + this.currentLevel.nextLevel.name);
                     this.scene.start("game");
-                    currentLevel = levels[currentLevel.nextLevel.name];
+                    this.currentLevel = this.gameService.getNextLevel(this.currentLevel);
                 }
             }
         } else {
             console.log("Game Over");
+            this.scene.start("ranking");
 
             // Stop creating posters
             clearInterval(posterCreationInterval);
@@ -128,7 +102,7 @@ class Game extends Phaser.Scene {
     // A poster is an image and the specific word put together as a group
     *createPoster(that) {
         let index = 0;
-        for(let word of currentLevel.wordList) {
+        for(let word of this.currentLevel.wordList) {
             wordsObject[word] = { isAlive: true };
             let posterImage = that.add.image(0, 0, "paper");
             let posterText = that.add.text(0, 0, word, {
@@ -156,7 +130,7 @@ class Game extends Phaser.Scene {
 
             // Apply physics to the container
             that.physics.world.enable(container);
-            container.body.setVelocity(0, currentLevel.posterVelocity);
+            container.body.setVelocity(0, this.currentLevel.posterVelocity);
             this.physics.add.collider(bottomCollider, container, this.posterCollided);
 
             this.input.keyboard.createCombo(word);
