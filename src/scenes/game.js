@@ -28,7 +28,7 @@ class Game extends Phaser.Scene {
     create() {
         this.add.image(500, 500, 'backgound');
 
-        let iter = this.createPoster(this);
+        let iter = this.createPoster();
         clearInterval(posterCreationInterval);  // Stop any previous started interval
         posterCreationInterval = setInterval(() => {
             iter.next();
@@ -101,12 +101,12 @@ class Game extends Phaser.Scene {
     }
 
     // A poster is an image and the specific word put together as a group
-    *createPoster(that) {
+    *createPoster() {
         let index = 0;
         for(let word of this.currentLevel.wordList) {
             wordsObject[word] = { isAlive: true };
-            let posterImage = that.add.image(0, 0, "paper");
-            let posterText = that.add.text(0, 0, word, {
+            let posterImage = this.add.image(0, 0, "paper");
+            let posterText = this.add.text(0, 0, word, {
                 fontSize: "32px",
                 fill: "#000",
                 padding: 20
@@ -120,17 +120,17 @@ class Game extends Phaser.Scene {
             posterImage.displayHeight = posterText.getBounds().height;
 
             // Put the poster randomly at the canvas top
-            let randomX = Phaser.Math.Between(0, that.game.canvas.width);
+            let randomX = Phaser.Math.Between(0, this.game.canvas.width);
             let randomY = Phaser.Math.Between(-(posterImage.displayHeight / 2), -(posterImage.displayHeight) * 2);
 
             // Create the poster itself by grouping both image and text in a "container"
-            let container = that.add.container(randomX, randomY, [posterImage, posterText]);
+            let container = this.add.container(randomX, randomY, [posterImage, posterText]);
 
             // Set the size of the container to the same size of the text (same as the image's)
             container.setSize(posterImage.displayWidth, posterImage.displayHeight);
 
             // Apply physics to the container
-            that.physics.world.enable(container);
+            this.physics.world.enable(container);
             container.body.setVelocity(0, this.currentLevel.posterVelocity);
             this.physics.add.collider(bottomCollider, container, this.posterCollided.bind(this));
 
