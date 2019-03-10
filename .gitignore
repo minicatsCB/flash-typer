@@ -46,6 +46,10 @@ build/Release
 # Dependency directories
 node_modules/
 
+# webpack build directory
+dist/
+!dist/index.html
+
 # Optional npm cache directory
 .npm
 
