@@ -1,12 +1,22 @@
+let instance = null;
+
 class Login {
     constructor(){
-        this.loggedInUsername = "Not logged in";
-        this.isUserLoggedIn = false;
-        this.hasAuthStateChanged = false;
+        if (!instance) {
+            this.loggedInUsername = "Not logged in";
+            this.isUserLoggedIn = false;
+            this.hasAuthStateChanged = false;
 
-        this.initFirebase();
-        this.setAuthStateObserver();
-        this.setDatabaseListeners();
+            this.initFirebase();
+            this.setAuthStateObserver();
+            this.setDatabaseListeners();
+            
+            instance = this;
+        }
+
+        this.time = new Date();
+
+        return instance;
     }
 
     get loggedInUsername() {
