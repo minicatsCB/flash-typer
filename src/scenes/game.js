@@ -3,13 +3,6 @@ import GameService from "../gameService.js";
 import paper from "../assets/paper.png";
 import background from "../assets/cartoon.jpg";
 
-let wordsObject = {};
-let combos = {};
-let posterCreationInterval;
-let scoreText;
-let livesText;
-let bottomCollider;
-
 class Game extends Phaser.Scene {
     constructor() {
         super({
@@ -18,6 +11,13 @@ class Game extends Phaser.Scene {
 
         this.gameService = new GameService();
         this.currentLevel = this.gameService.getLevelByDifficulty("easy");
+
+        this.wordsObject = {};
+        this.combos = {};
+        this.posterCreationInterval;
+        this.scoreText;
+        this.livesText;
+        this.bottomCollider;
     }
 
     preload() {
@@ -29,19 +29,19 @@ class Game extends Phaser.Scene {
         this.add.image(500, 500, 'backgound');
 
         let iter = this.createPoster();
-        clearInterval(posterCreationInterval);  // Stop any previous started interval
-        posterCreationInterval = setInterval(() => {
+        clearInterval(this.posterCreationInterval);  // Stop any previous started interval
+        this.posterCreationInterval = setInterval(() => {
             iter.next();
         }, 1000);
 
         // The text to be shown in the score area
-        scoreText = this.add.text(16, 16, 'Score: ' + this.gameService.getCurrentScore(), {
+        this.scoreText = this.add.text(16, 16, 'Score: ' + this.gameService.getCurrentScore(), {
             fontSize: '32px',
             fill: '#fff'
         });
 
         // The text to be shown in the lives area
-        livesText = this.add.text(160, 16, 'Lives: ' + this.gameService.getCurrentLives(), {
+        this.livesText = this.add.text(160, 16, 'Lives: ' + this.gameService.getCurrentLives(), {
             fontSize: '32px',
             fill: '#fff'
         });
@@ -53,19 +53,19 @@ class Game extends Phaser.Scene {
             }).join("").toLowerCase();
 
             // The match is only valid if the word hasn't been typed yet (it's alive)
-            if(wordsObject[typedWord].isAlive === true) {
-                wordsObject[typedWord].isAlive = false;
-                combos[typedWord].destroy();
+            if(this.wordsObject[typedWord].isAlive === true) {
+                this.wordsObject[typedWord].isAlive = false;
+                this.combos[typedWord].destroy();
                 let updatedScore = this.gameService.getCurrentScore() + 10;
                 this.gameService.setScore(updatedScore);
-                scoreText.setText("Score: " + this.gameService.getCurrentScore());
+                this.scoreText.setText("Score: " + this.gameService.getCurrentScore());
             }
         });
 
         // Put an empty object at the bottom of the screen to detect when a poster collides with it
         // NOTE: The X position = 15 is a fix to adjust the position more precisely
-        bottomCollider = this.physics.add.image(15, this.game.canvas.height).setImmovable(true);
-        bottomCollider.setSize(this.game.canvas.width, 30, false);    }
+        this.bottomCollider = this.physics.add.image(15, this.game.canvas.height).setImmovable(true);
+        this.bottomCollider.setSize(this.game.canvas.width, 30, false);    }
 
     update() {
         if (this.gameService.getCurrentLives() > 0) {
@@ -81,7 +81,7 @@ class Game extends Phaser.Scene {
             this.scene.start("ranking");
 
             // Stop creating posters
-            clearInterval(posterCreationInterval);
+            clearInterval(this.posterCreationInterval);
 
             this.physics.pause();
         }
@@ -92,19 +92,19 @@ class Game extends Phaser.Scene {
         // NOTE: We know it's position 1 of the array because when we created
         // the poster container, we added the image first and the text secondly
         let collidedWord = poster.list[1].text;
-        wordsObject[collidedWord].isAlive = false;
+        this.wordsObject[collidedWord].isAlive = false;
         poster.destroy();
         let currentLives = this.gameService.getCurrentLives();
         currentLives = (currentLives <= 0) ? 0 : --currentLives;
         this.gameService.setLives(currentLives);
-        livesText.setText("Lives: " + this.gameService.getCurrentLives());
+        this.livesText.setText("Lives: " + this.gameService.getCurrentLives());
     }
 
     // A poster is an image and the specific word put together as a group
     *createPoster() {
         let index = 0;
         for(let word of this.currentLevel.wordList) {
-            wordsObject[word] = { isAlive: true };
+            this.wordsObject[word] = { isAlive: true };
             let posterImage = this.add.image(0, 0, "paper");
             let posterText = this.add.text(0, 0, word, {
                 fontSize: "32px",
@@ -132,13 +132,13 @@ class Game extends Phaser.Scene {
             // Apply physics to the container
             this.physics.world.enable(container);
             container.body.setVelocity(0, this.currentLevel.posterVelocity);
-            this.physics.add.collider(bottomCollider, container, this.posterCollided.bind(this));
+            this.physics.add.collider(this.bottomCollider, container, this.posterCollided.bind(this));
 
             this.input.keyboard.createCombo(word);
             //Associate each combo with a poster.
             // This way, we can destroy the corresponding poster when
             // WHOLE a word is typed, this is, a combo is matched
-            combos[word] = container;
+            this.combos[word] = container;
 
             index++;
             yield container;
