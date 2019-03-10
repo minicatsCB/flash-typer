@@ -78,7 +78,7 @@ class Game extends Phaser.Scene {
             }
         } else {
             console.log("Game Over");
-            this.scene.start("ranking");
+            this.scene.start("ranking", { achievedScore: this.gameService.getCurrentScore() });
 
             // Stop creating posters
             clearInterval(this.posterCreationInterval);

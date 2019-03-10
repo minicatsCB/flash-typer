@@ -7,6 +7,12 @@ class Ranking extends Phaser.Scene {
         super({
             key: 'ranking'
         });
+
+        this.achievedScore = 0;
+    }
+
+    init(data){
+        this.achievedScore = data.achievedScore;
     }
 
     preload() {
