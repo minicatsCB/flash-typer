@@ -8,7 +8,6 @@ let combos = {};
 let posterCreationInterval;
 let scoreText;
 let livesText;
-let lives = 3;
 let bottomCollider;
 
 class Game extends Phaser.Scene {
@@ -42,7 +41,7 @@ class Game extends Phaser.Scene {
         });
 
         // The text to be shown in the lives area
-        livesText = this.add.text(160, 16, 'Lives: ' + lives, {
+        livesText = this.add.text(160, 16, 'Lives: ' + this.gameService.getCurrentLives(), {
             fontSize: '32px',
             fill: '#fff'
         });
@@ -69,7 +68,7 @@ class Game extends Phaser.Scene {
         bottomCollider.setSize(this.game.canvas.width, 30, false);    }
 
     update() {
-        if (lives > 0) {
+        if (this.gameService.getCurrentLives() > 0) {
             if(!this.currentLevel.isLastLevel) {
                 if(this.gameService.getCurrentScore() === this.currentLevel.nextLevel.neededScore) {
                     console.log("Going from " + this.currentLevel.name + " to " + this.currentLevel.nextLevel.name);
@@ -95,8 +94,10 @@ class Game extends Phaser.Scene {
         let collidedWord = poster.list[1].text;
         wordsObject[collidedWord].isAlive = false;
         poster.destroy();
-        lives = (lives <= 0) ? 0 : --lives;
-        livesText.setText("Lives: " + lives);
+        let currentLives = this.gameService.getCurrentLives();
+        currentLives = (currentLives <= 0) ? 0 : --currentLives;
+        this.gameService.setLives(currentLives);
+        livesText.setText("Lives: " + this.gameService.getCurrentLives());
     }
 
     // A poster is an image and the specific word put together as a group
@@ -131,7 +132,7 @@ class Game extends Phaser.Scene {
             // Apply physics to the container
             that.physics.world.enable(container);
             container.body.setVelocity(0, this.currentLevel.posterVelocity);
-            this.physics.add.collider(bottomCollider, container, this.posterCollided);
+            this.physics.add.collider(bottomCollider, container, this.posterCollided.bind(this));
 
             this.input.keyboard.createCombo(word);
             //Associate each combo with a poster.

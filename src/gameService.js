@@ -34,6 +34,7 @@ class GameService {
         }
 
         this.score = 0;
+        this.lives = 3;
     }
 
     getLevelByDifficulty(difficulty) {
@@ -50,6 +51,14 @@ class GameService {
 
     setScore(score) {
         this.score = score;
+    }
+
+    getCurrentLives(){
+        return this.lives;
+    }
+
+    setLives(lives){
+        this.lives = lives;
     }
 }
 
