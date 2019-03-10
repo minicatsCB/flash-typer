@@ -65,7 +65,7 @@ class Main extends Phaser.Scene {
         this.loginButton.setInteractive({ useHandCursor: true });
         this.loginButton.on("pointerover", this.enterButtonHoverState);
         this.loginButton.on("pointerout", this.enterButtonRestState);
-        this.loginButton.on("pointerdown", this.loginSrv.signInWithGithub);
+        this.loginButton.on("pointerdown", this.loginSrv.signInWithGithub.bind(this.loginSrv));
 
         this.loginButton.visible = false;
 
