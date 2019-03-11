@@ -1,3 +1,5 @@
+import Login from "../login.js";
+
 const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;
 const COLOR_DARK = 0x260e04;
@@ -8,6 +10,7 @@ class Ranking extends Phaser.Scene {
             key: 'ranking'
         });
 
+        this.loginSrv = new Login();
         this.achievedScore = 0;
     }
 
@@ -16,7 +19,7 @@ class Ranking extends Phaser.Scene {
     }
 
     preload() {
-        
+
     }
 
     create() {
@@ -26,27 +29,17 @@ class Ranking extends Phaser.Scene {
             fill: '#fff'
         }).setOrigin(0.5, 0.5);
 
-        let p1 = {
-            username: "redVelvet",
-            score: 1010,
-            color: 0xffffff
-        };
+        this.loginSrv.saveUserScoreInDatabase(this.achievedScore).then(() => {
+            this.loginSrv.getUsersRanking().then(users => {
+                this.createRanking(rankingText.x, rankingText.y, users);
+            });
+        });    
+    }
 
-        let p2 = {
-            username: "chocolateeeeee",
-            score: 650,
-            color: 0xffffff
-        };
-
-        let p3 = {
-            username: "bananaSplit",
-            score: 140,
-            color: 0xffffff
-        };
-
+    createRanking(xPos, yPos, users) {
         this.rexUI.add.gridTable({
-                x: rankingText.x,
-                y: rankingText.y + 50,
+                x: xPos,
+                y: yPos + 50,
 
                 background: this.rexUI.add.roundRectangle(0, 0, 20, 10, 10, COLOR_PRIMARY),
 
@@ -79,8 +72,8 @@ class Ranking extends Phaser.Scene {
                             width: width,
                             height: height,
                             background: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 0).setStrokeStyle(2, COLOR_DARK),
-                            icon: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 10, item.color),
-                            text: scene.add.text(0, 0, item.username + " " + item.score),
+                            icon: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 10, COLOR_DARK),
+                            text: scene.add.text(0, 0, item.displayName + " " + item.achievedScore),
 
                             space: {
                                 icon: 10,
@@ -90,7 +83,7 @@ class Ranking extends Phaser.Scene {
                         .setOrigin(0, 0);
                 },
 
-                items: [p1, p2, p3, p1, p2, p3, p1, p2, p3, p1, p2, p3, p1, p2, p3, p1, p2, p3, p1, p2, p3]
+                items: users
 
             })
             .setOrigin(0.5, 0)

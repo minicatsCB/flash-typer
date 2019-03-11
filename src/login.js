@@ -114,11 +114,11 @@ class Login {
         let user = firebase.auth().currentUser;
 
         if(user != null) {
-            this.getUserByEmail(user.email).then(foundUser => {
+            return this.getUserByEmail(user.email).then(foundUser => {
                 if(foundUser) {
                     let update = {};
                     update["users/" + foundUser.key + "/achievedScore"] = achievedScore;
-                    firebase.database().ref().update(update).then(() => {
+                    return firebase.database().ref().update(update).then(() => {
                         console.log("User score updated succesfully");
                     }).catch(error => {
                         console.log("An error ocurred while updating user score. Error:", error);
@@ -144,6 +144,20 @@ class Login {
                 return user;
             }).catch(error => {
                 console.log("An error ocurred while searching user in database. Error:", error);
+            });
+    }
+
+    getUsersRanking() {
+        let users = [];
+        return firebase.database().ref().child("users")
+            .orderByChild("achievedScore")
+            .once("value")
+            .then(snapshot => {
+                snapshot.forEach((childSnapshot) => {
+                    users.push(childSnapshot.val());
+                });
+
+                return users.reverse(); // We want the users ordered in descending order
             });
     }
 
