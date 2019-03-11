@@ -80,7 +80,7 @@ class Login {
                     photoURL: result.additionalUserInfo.profile.avatar_url
                 };
                 this.updateCurrentUserAuthProfile(userData);
-                this.saveUserDataInDatabase(result.user.uid, userData);
+                this.saveUserDataInDatabase(userData);
             }
 
             this.loggedInUsername = result.additionalUserInfo.profile.login;
@@ -101,11 +101,8 @@ class Login {
         });
     }
 
-    saveUserDataInDatabase(uid, userData) {
-        firebase.database().ref('users/' + uid).set({
-            displayName: userData.displayName,
-            photoURL: userData.photoURL
-        }).then(() => {
+    saveUserDataInDatabase(userData) {
+        firebase.database().ref().child('users').push(userData).then(() => {
             console.log("User data saved in database succesfully");
         }).catch(error => {
             console.log("An error ocurred while saving user data in database. Error:", error);
@@ -117,24 +114,37 @@ class Login {
         let user = firebase.auth().currentUser;
 
         if(user != null) {
-            this.getUserByUid(user.uid).then(res => {
-                let update = {};
-                update["users/" + user.uid + "/achievedScore"] = achievedScore;
-                firebase.database().ref().update(update).then(() => {
-                    console.log("User score updated succesfully");
-                }).catch(error => {
-                    console.log("An error ocurred while updating user score. Error:", error);
-                });
+            this.getUserByEmail(user.email).then(foundUser => {
+                if(foundUser) {
+                    let update = {};
+                    update["users/" + foundUser.key + "/achievedScore"] = achievedScore;
+                    firebase.database().ref().update(update).then(() => {
+                        console.log("User score updated succesfully");
+                    }).catch(error => {
+                        console.log("An error ocurred while updating user score. Error:", error);
+                    });
+                } else {
+                    console.log("User not found in database. Can't save its score");
+                }
             });
         }
     }
 
-    getUserByUid(uid) {
-        return firebase.database().ref('/users/' + uid).once('value').then((snapshot) => {
-            return snapshot.val();
-        }).catch(error => {
-            console.log("An error ocurred while searching user in database. Error:", error);
-        });
+    getUserByEmail(email) {
+        let user;
+        return firebase.database().ref().child("users")
+            .orderByChild("email")
+            .equalTo(email)
+            .once("value")
+            .then(snapshot => {
+                snapshot.forEach((childSnapshot) => {
+                    user = childSnapshot;
+                });
+
+                return user;
+            }).catch(error => {
+                console.log("An error ocurred while searching user in database. Error:", error);
+            });
     }
 
     signOut() {
