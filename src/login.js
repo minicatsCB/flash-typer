@@ -75,6 +75,7 @@ class Login {
             console.log("User signed up with Github succesfully");
             if (result.additionalUserInfo.isNewUser) {
                 let userData = {
+                    email: result.user.email,
                     displayName: result.additionalUserInfo.profile.login,
                     photoURL: result.additionalUserInfo.profile.avatar_url
                 };
@@ -90,6 +91,7 @@ class Login {
 
     updateCurrentUserAuthProfile(userData) {
         firebase.auth().currentUser.updateProfile({
+            email: userData.email,
             displayName: userData.displayName,
             photoURL: userData.photoURL
         }).then(() => {
