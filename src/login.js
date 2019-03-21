@@ -9,7 +9,6 @@ class Login {
 
             this.initFirebase();
             this.setAuthStateObserver();
-            this.setDatabaseListeners();
 
             instance = this;
         }
@@ -163,19 +162,6 @@ class Login {
 
     signOut() {
         firebase.auth().signOut();
-    }
-
-    setDatabaseListeners() {
-        firebase.database().ref().child("users").on('child_added', this.addUserToList);
-        firebase.database().ref().child("users").on('child_removed', this.removeUserFromList);
-    }
-
-    addUserToList(user) {
-        console.log("Adding user to database");
-    }
-
-    removeUserFromList(user) {
-        console.log("Removing user from database");
     }
 }
 
