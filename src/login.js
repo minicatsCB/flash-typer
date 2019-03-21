@@ -42,10 +42,10 @@ class Login {
 
     initFirebase() {
         var config = {
-            apiKey: "yourApiKey",
-            authDomain: "yourAuthDomain",
-            databaseURL: "yourDatabaseURL",
-            projectId: "yourProjectId",
+            apiKey: "AIzaSyDhZLEfkH6ydtLOEBzjQKjCIjnIwtLooQs",
+            authDomain: "flash-typer.firebaseapp.com",
+            databaseURL: "https://flash-typer.firebaseio.com",
+            projectId: "flash-typer",
         };
 
         firebase.initializeApp(config);
