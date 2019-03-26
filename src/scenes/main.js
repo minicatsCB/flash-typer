@@ -1,5 +1,7 @@
 import LoginService from "../loginService.js";
 
+import mainBackground from "../assets/mainBackground.jpg";
+
 const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;
 const COLOR_DARK = 0x260e04;
@@ -18,26 +20,32 @@ class Main extends Phaser.Scene {
         this.loginBadge;
     }
 
+    preload() {
+        this.load.image("mainBackground", mainBackground);
+    }
+
     create() {
+        this.add.image(0, 0, "mainBackground").setOrigin(0, 0);
+
         let canvasXMiddle = this.game.canvas.width / 2;
         let titleText = this.add.text(canvasXMiddle, this.game.canvas.height / 4, "Flash Typer", {
             fontSize: "32px",
-            fill: "#fff"
+            fill: "#000"
         }).setOrigin(0.5, 0.5);
 
         let instructionsText = this.add.text(canvasXMiddle, titleText.y + 50, "Choose an option by typing it", {
             fontSize: "16px",
-            fill: "#fff"
+            fill: "#000"
         }).setOrigin(0.5, 0.5);
 
         let playText = this.add.text(canvasXMiddle, instructionsText.y + 50, "play", {
             fontSize: "32px",
-            fill: "#fff"
+            fill: "#000"
         }).setOrigin(0.5, 0.5);
 
         let rankingText = this.add.text(canvasXMiddle, playText.y + 50, "ranking", {
             fontSize: "32px",
-            fill: "#fff"
+            fill: "#000"
         }).setOrigin(0.5, 0.5);
 
         this.input.keyboard.createCombo("play");
@@ -56,7 +64,7 @@ class Main extends Phaser.Scene {
         });
 
         this.loginButton = this.add.text(rankingText.x, rankingText.y + 100, "Login with Github", {
-            fill: "#ffffff"
+            fill: "#000"
         }).setOrigin(0.5, 0.5);
 
         this.loginButton.setInteractive({ useHandCursor: true });
@@ -67,7 +75,7 @@ class Main extends Phaser.Scene {
         this.loginButton.visible = false;
 
         this.logoutButton = this.add.text(rankingText.x, rankingText.y + 100, "Logout from Github", {
-            fill: "#ffffff"
+            fill: "#000"
         }).setOrigin(0.5, 0.5);
 
         this.logoutButton.setInteractive({ useHandCursor: true });

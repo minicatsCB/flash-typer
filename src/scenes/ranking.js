@@ -1,5 +1,7 @@
 import LoginService from "../loginService.js";
 
+import rankingBackground from "../assets/rankingBackground.jpg";
+
 const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;
 const COLOR_DARK = 0x260e04;
@@ -18,7 +20,13 @@ class Ranking extends Phaser.Scene {
         this.achievedScore = data.achievedScore;
     }
 
+    preload() {
+        this.load.image("rankingBackground", rankingBackground);
+    }
+
     create() {
+        this.add.image(0, 0, "rankingBackground").setOrigin(0, 0);
+
         let canvasXMiddle = this.game.canvas.width / 2;
         let rankingText = this.add.text(canvasXMiddle, 100, "Ranking", {
             fontSize: "32px",

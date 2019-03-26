@@ -1,7 +1,7 @@
 import GameService from "../gameService.js";
 
 import paper from "../assets/paper.png";
-import background from "../assets/cartoon.jpg";
+import gameBackground from "../assets/gameBackground.jpg";
 
 class Game extends Phaser.Scene {
     constructor() {
@@ -22,11 +22,11 @@ class Game extends Phaser.Scene {
 
     preload() {
         this.load.image("paper", paper);
-        this.load.image("backgound", background);
+        this.load.image("gameBackground", gameBackground);
     }
 
     create() {
-        this.add.image(500, 500, "backgound");
+        this.add.image(0, 0, "gameBackground").setOrigin(0, 0);
 
         let iter = this.createPoster();
         clearInterval(this.posterCreationInterval);  // Stop any previous started interval
