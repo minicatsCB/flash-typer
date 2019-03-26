@@ -22,23 +22,23 @@ class Main extends Phaser.Scene {
     }
 
     create() {
-        let canvarXMiddle = this.game.canvas.width / 2;
-        let titleText = this.add.text(canvarXMiddle, this.game.canvas.height / 4, "Flash Typer", {
+        let canvasXMiddle = this.game.canvas.width / 2;
+        let titleText = this.add.text(canvasXMiddle, this.game.canvas.height / 4, "Flash Typer", {
             fontSize: "32px",
             fill: "#fff"
         }).setOrigin(0.5, 0.5);
 
-        let instructionsText = this.add.text(canvarXMiddle, titleText.y + 50, "Choose an option by typing it", {
+        let instructionsText = this.add.text(canvasXMiddle, titleText.y + 50, "Choose an option by typing it", {
             fontSize: "16px",
             fill: "#fff"
         }).setOrigin(0.5, 0.5);
 
-        let playText = this.add.text(canvarXMiddle, instructionsText.y + 50, "play", {
+        let playText = this.add.text(canvasXMiddle, instructionsText.y + 50, "play", {
             fontSize: "32px",
             fill: "#fff"
         }).setOrigin(0.5, 0.5);
 
-        let rankingText = this.add.text(canvarXMiddle, playText.y + 50, "ranking", {
+        let rankingText = this.add.text(canvasXMiddle, playText.y + 50, "ranking", {
             fontSize: "32px",
             fill: "#fff"
         }).setOrigin(0.5, 0.5);
