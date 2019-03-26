@@ -6,8 +6,8 @@ import Ranking from "./scenes/ranking.js";
 
 let config = {
     type: Phaser.CANVAS,
-    width: 800,
-    heigth: 600,
+    width: 540,
+    heigth: 960,
     physics: {
         default: "arcade",
         arcade: {

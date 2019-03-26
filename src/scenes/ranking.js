@@ -46,8 +46,8 @@ class Ranking extends Phaser.Scene {
             background: this.rexUI.add.roundRectangle(0, 0, 20, 10, 10, COLOR_PRIMARY),
 
             table: {
-                width: 600,
-                height: 400,
+                width: 340,
+                height: 460,
                 cellWidth: 600,
                 cellHeight: 60,
                 columns: 1
