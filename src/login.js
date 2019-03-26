@@ -6,7 +6,7 @@ class Login {
             this.loggedInUsername = "Not logged in";
             this.isUserLoggedIn = false;
             this.hasAuthStateChanged = false;
-            
+
             this.setAuthStateObserver();
 
             instance = this;
@@ -24,7 +24,7 @@ class Login {
     }
 
     get isUserLoggedIn() {
-      return this._isUserLoggedIn;
+        return this._isUserLoggedIn;
     }
 
     set isUserLoggedIn(loginState) {
@@ -72,7 +72,7 @@ class Login {
 
             this.loggedInUsername = result.additionalUserInfo.profile.login;
         }).catch(function(error) {
-            console.log("An error ocurred while signing in with Github. Error:", error);
+            console.error("An error ocurred while signing in with Github. Error:", error);
         });
     }
 
@@ -84,16 +84,16 @@ class Login {
         }).then(() => {
             console.log("Profile update succesful");
         }).catch(error => {
-            console.log("An error ocurrer while updating user profile. Error:", error);
+            console.error("An error ocurrer while updating user profile. Error:", error);
         });
     }
 
     saveUserDataInDatabase(userData) {
-        firebase.database().ref().child('users').push(userData).then(() => {
+        firebase.database().ref().child("users").push(userData).then(() => {
             console.log("User data saved in database succesfully");
         }).catch(error => {
-            console.log("An error ocurred while saving user data in database. Error:", error);
-        });;
+            console.error("An error ocurred while saving user data in database. Error:", error);
+        });
 
     }
 
@@ -108,7 +108,7 @@ class Login {
                     return firebase.database().ref().update(update).then(() => {
                         console.log("User score updated succesfully");
                     }).catch(error => {
-                        console.log("An error ocurred while updating user score. Error:", error);
+                        console.error("An error ocurred while updating user score. Error:", error);
                     });
                 } else {
                     console.log("User not found in database. Can't save its score");
@@ -130,7 +130,7 @@ class Login {
 
                 return user;
             }).catch(error => {
-                console.log("An error ocurred while searching user in database. Error:", error);
+                console.error("An error ocurred while searching user in database. Error:", error);
             });
     }
 

@@ -6,7 +6,7 @@ import background from "../assets/cartoon.jpg";
 class Game extends Phaser.Scene {
     constructor() {
         super({
-            key: 'game'
+            key: "game"
         });
 
         this.gameService = new GameService();
@@ -26,7 +26,7 @@ class Game extends Phaser.Scene {
     }
 
     create() {
-        this.add.image(500, 500, 'backgound');
+        this.add.image(500, 500, "backgound");
 
         let iter = this.createPoster();
         clearInterval(this.posterCreationInterval);  // Stop any previous started interval
@@ -35,19 +35,19 @@ class Game extends Phaser.Scene {
         }, 1000);
 
         // The text to be shown in the score area
-        this.scoreText = this.add.text(16, 16, 'Score: ' + this.gameService.getCurrentScore(), {
-            fontSize: '32px',
-            fill: '#fff'
+        this.scoreText = this.add.text(16, 16, "Score: " + this.gameService.getCurrentScore(), {
+            fontSize: "32px",
+            fill: "#fff"
         });
 
         // The text to be shown in the lives area
-        this.livesText = this.add.text(160, 16, 'Lives: ' + this.gameService.getCurrentLives(), {
-            fontSize: '32px',
-            fill: '#fff'
+        this.livesText = this.add.text(160, 16, "Lives: " + this.gameService.getCurrentLives(), {
+            fontSize: "32px",
+            fill: "#fff"
         });
 
         // This will listen for a WHOLE word to be typed
-        this.input.keyboard.on('keycombomatch', (event) => {
+        this.input.keyboard.on("keycombomatch", (event) => {
             let typedWord = event.keyCodes.map(keyCode => {
                 return String.fromCharCode(keyCode);
             }).join("").toLowerCase();

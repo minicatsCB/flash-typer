@@ -7,7 +7,7 @@ const COLOR_DARK = 0x260e04;
 class Main extends Phaser.Scene {
     constructor() {
         super({
-            key: 'main'
+            key: "main"
         });
 
         this.loginSrv = new Login();
@@ -23,44 +23,44 @@ class Main extends Phaser.Scene {
 
     create() {
         let canvarXMiddle = this.game.canvas.width / 2;
-        let titleText = this.add.text(canvarXMiddle, this.game.canvas.height / 4, 'Flash Typer', {
-            fontSize: '32px',
-            fill: '#fff'
+        let titleText = this.add.text(canvarXMiddle, this.game.canvas.height / 4, "Flash Typer", {
+            fontSize: "32px",
+            fill: "#fff"
         }).setOrigin(0.5, 0.5);
 
-        let instructionsText = this.add.text(canvarXMiddle, titleText.y + 50, 'Choose an option by typing it', {
-            fontSize: '16px',
-            fill: '#fff'
+        let instructionsText = this.add.text(canvarXMiddle, titleText.y + 50, "Choose an option by typing it", {
+            fontSize: "16px",
+            fill: "#fff"
         }).setOrigin(0.5, 0.5);
 
-        let playText = this.add.text(canvarXMiddle, instructionsText.y + 50, 'play', {
-            fontSize: '32px',
-            fill: '#fff'
+        let playText = this.add.text(canvarXMiddle, instructionsText.y + 50, "play", {
+            fontSize: "32px",
+            fill: "#fff"
         }).setOrigin(0.5, 0.5);
 
-        let rankingText = this.add.text(canvarXMiddle, playText.y + 50, 'ranking', {
-            fontSize: '32px',
-            fill: '#fff'
+        let rankingText = this.add.text(canvarXMiddle, playText.y + 50, "ranking", {
+            fontSize: "32px",
+            fill: "#fff"
         }).setOrigin(0.5, 0.5);
 
         this.input.keyboard.createCombo("play");
         this.input.keyboard.createCombo("ranking");
 
-        this.input.keyboard.on('keycombomatch', event => {
+        this.input.keyboard.on("keycombomatch", event => {
             let typedWord = event.keyCodes.map(keyCode => {
                 return String.fromCharCode(keyCode);
             }).join("").toLowerCase();
 
             if(typedWord === "play") {
-                this.scene.start('game');
+                this.scene.start("game");
             } else if (typedWord === "ranking") {
-                this.scene.start('ranking');
+                this.scene.start("ranking");
             }
         });
 
         this.loginButton = this.add.text(rankingText.x, rankingText.y + 100, "Login with Github", {
             fill: "#ffffff"
-        }).setOrigin(0.5, 0.5);;
+        }).setOrigin(0.5, 0.5);
 
         this.loginButton.setInteractive({ useHandCursor: true });
         this.loginButton.on("pointerover", this.enterButtonHoverState);
@@ -71,7 +71,7 @@ class Main extends Phaser.Scene {
 
         this.logoutButton = this.add.text(rankingText.x, rankingText.y + 100, "Logout from Github", {
             fill: "#ffffff"
-        }).setOrigin(0.5, 0.5);;
+        }).setOrigin(0.5, 0.5);
 
         this.logoutButton.setInteractive({ useHandCursor: true });
         this.logoutButton.on("pointerover", this.enterButtonHoverState);
@@ -110,49 +110,49 @@ class Main extends Phaser.Scene {
 
     createTextBox(scene, x, y) {
         let textBox = scene.rexUI.add.textBox({
-                x: x,
-                y: y,
+            x: x,
+            y: y,
 
-                background: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, COLOR_PRIMARY)
-                    .setStrokeStyle(2, COLOR_LIGHT),
+            background: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, COLOR_PRIMARY)
+                .setStrokeStyle(2, COLOR_LIGHT),
 
-                text: scene.add.text(0, 0, this.loginSrv.loggedInUsername, {
-                    fill: "#ffffff"
-                }),
+            text: scene.add.text(0, 0, this.loginSrv.loggedInUsername, {
+                fill: "#ffffff"
+            }),
 
-                action: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, COLOR_DARK).setAlpha(0),
+            action: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, COLOR_DARK).setAlpha(0),
 
-                space: {
-                    left: 20,
-                    right: 20,
-                    top: 20,
-                    bottom: 20,
-                    icon: 10,
-                    text: 10,
-                }
-            })
-            .setOrigin(0)
-            .layout();
+            space: {
+                left: 20,
+                right: 20,
+                top: 20,
+                bottom: 20,
+                icon: 10,
+                text: 10,
+            }
+        })
+        .setOrigin(0)
+        .layout();
 
         textBox
             .setInteractive()
-            .on('pointerdown', function() {
+            .on("pointerdown", function() {
                 if (this.isTyping) {
                     this.stop(true);
                 }
             }, textBox)
-            .on('pageend', function() {
-                let icon = this.getElement('action').setAlpha(1);
+            .on("pageend", function() {
+                let icon = this.getElement("action").setAlpha(1);
                 icon.y -= 30;
-                let tween = scene.tweens.add({
+                scene.tweens.add({
                     targets: icon,
-                    y: '+=30',
-                    ease: 'Cubic',
+                    y: "+=30",
+                    ease: "Cubic",
                     duration: 500,
                     repeat: 0,
                     yoyo: false
                 });
-            }, textBox)
+            }, textBox);
 
         return textBox;
     }

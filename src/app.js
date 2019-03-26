@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
+import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin.js";
 import Main from "./scenes/main.js";
 import Game from "./scenes/game.js";
 import Ranking from "./scenes/ranking.js";
@@ -17,9 +17,9 @@ let config = {
     },
     plugins: {
         scene: [{
-            key: 'rexUI',
+            key: "rexUI",
             plugin: UIPlugin,
-            mapping: 'rexUI'
+            mapping: "rexUI"
         }]
     },
     scene: [Main, Game, Ranking]

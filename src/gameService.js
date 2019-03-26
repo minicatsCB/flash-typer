@@ -31,7 +31,7 @@ class GameService {
                 wordList: difficultWords,
                 isLastLevel: true
             }
-        }
+        };
 
         this.score = 0;
         this.lives = 3;
