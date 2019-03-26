@@ -151,7 +151,11 @@ class Login {
     }
 
     signOut() {
-        firebase.auth().signOut();
+        firebase.auth().signOut().then(() => {
+            console.log("User signed out from Github succesfully");
+        }).catch(err => {
+            console.error("An error ocurred while signing out from Github. Error:", err);
+        });
     }
 }
 
