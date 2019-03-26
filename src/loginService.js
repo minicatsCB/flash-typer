@@ -4,9 +4,19 @@ class LoginService {
     constructor(){
         if (!instance) {
             instance = this;
+
+            this.user;
         }
 
         return instance;
+    }
+
+    get user() {
+        return this._user;
+    }
+
+    set user(user) {
+        this._user = user;
     }
 
     setAuthStateObserver(handler) {

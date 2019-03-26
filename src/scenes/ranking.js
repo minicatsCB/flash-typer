@@ -25,11 +25,17 @@ class Ranking extends Phaser.Scene {
             fill: "#fff"
         }).setOrigin(0.5, 0.5);
 
-        this.loginSrv.saveUserScoreInDatabase(this.achievedScore).then(() => {
+        if (this.loginSrv.user && this.achievedScore) {
+            this.loginSrv.saveUserScoreInDatabase(this.achievedScore).then(() => {
+                this.loginSrv.getUsersRanking().then(users => {
+                    this.createRanking(rankingText.x, rankingText.y, users);
+                });
+            });
+        } else {
             this.loginSrv.getUsersRanking().then(users => {
                 this.createRanking(rankingText.x, rankingText.y, users);
             });
-        });
+        }
     }
 
     createRanking(xPos, yPos, users) {

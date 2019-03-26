@@ -81,6 +81,7 @@ class Main extends Phaser.Scene {
     }
 
     authStateChanged(user) {
+        this.loginSrv.user = user;
         this.loginButton.visible = !user;
         this.logoutButton.visible = !!user;
         let loggedInUsername = user ? (user.displayName || "No name") : "Not logged in";
