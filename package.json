@@ -6,7 +6,7 @@
   "dependencies": {
     "firebase-tools": "^6.4.0",
     "phaser": "^3.16.2",
-    "phaser3-rex-plugins": "git+https://github.com/rexrainbow/phaser3-rex-notes.git"
+    "phaser3-rex-plugins": "git+https://github.com/rexrainbow/phaser3-rex-notes.git#e362b38bc6ba8d58ebdfb10285208a514ee83a95"
   },
   "devDependencies": {
     "file-loader": "^3.0.1",
