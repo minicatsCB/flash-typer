@@ -66,7 +66,7 @@ class Main extends Phaser.Scene {
 
         this.loginButton.visible = false;
 
-        this.logoutButton = this.add.text(rankingText.x, rankingText.y + 150, "Logout from Github", {
+        this.logoutButton = this.add.text(rankingText.x, rankingText.y + 100, "Logout from Github", {
             fill: "#ffffff"
         }).setOrigin(0.5, 0.5);
 
