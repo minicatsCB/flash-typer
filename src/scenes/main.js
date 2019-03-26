@@ -18,10 +18,6 @@ class Main extends Phaser.Scene {
         this.loginBadge;
     }
 
-    preload() {
-
-    }
-
     create() {
         let canvasXMiddle = this.game.canvas.width / 2;
         let titleText = this.add.text(canvasXMiddle, this.game.canvas.height / 4, "Flash Typer", {
@@ -89,10 +85,6 @@ class Main extends Phaser.Scene {
         this.logoutButton.visible = !!user;
         let loggedInUsername = user ? (user.displayName || "No name") : "Not logged in";
         this.loginBadge.start(loggedInUsername, 50);
-    }
-
-    update() {
-
     }
 
     enterButtonHoverState() {

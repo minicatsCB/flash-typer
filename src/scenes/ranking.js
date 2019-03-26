@@ -18,10 +18,6 @@ class Ranking extends Phaser.Scene {
         this.achievedScore = data.achievedScore;
     }
 
-    preload() {
-
-    }
-
     create() {
         let canvasXMiddle = this.game.canvas.width / 2;
         let rankingText = this.add.text(canvasXMiddle, 100, "Ranking", {
