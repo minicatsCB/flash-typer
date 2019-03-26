@@ -118,12 +118,12 @@ class Login {
     }
 
     getUserByEmail(email) {
-        let user;
         return firebase.database().ref().child("users")
             .orderByChild("email")
             .equalTo(email)
             .once("value")
             .then(snapshot => {
+                let user;
                 snapshot.forEach((childSnapshot) => {
                     user = childSnapshot;
                 });
@@ -135,16 +135,18 @@ class Login {
     }
 
     getUsersRanking() {
-        let users = [];
         return firebase.database().ref().child("users")
             .orderByChild("achievedScore")
             .once("value")
             .then(snapshot => {
+                let users = [];
                 snapshot.forEach((childSnapshot) => {
                     users.push(childSnapshot.val());
                 });
 
                 return users.reverse(); // We want the users ordered in descending order
+            }).catch(error => {
+                console.error("An error ocurred while getting users ranking. Error:", error);
             });
     }
 
