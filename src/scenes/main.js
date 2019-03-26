@@ -100,10 +100,10 @@ class Main extends Phaser.Scene {
         });
     }
 
-    createTextBox(scene, x, y) {
+    createTextBox(scene, xPos, yPos) {
         let textBox = scene.rexUI.add.textBox({
-            x: x,
-            y: y,
+            x: xPos,
+            y: yPos,
 
             background: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, COLOR_PRIMARY)
                 .setStrokeStyle(2, COLOR_LIGHT),
