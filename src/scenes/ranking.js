@@ -1,4 +1,4 @@
-import Login from "../login.js";
+import LoginService from "../loginService.js";
 
 const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;
@@ -10,7 +10,7 @@ class Ranking extends Phaser.Scene {
             key: "ranking"
         });
 
-        this.loginSrv = new Login();
+        this.loginSrv = new LoginService();
         this.achievedScore = 0;
     }
 

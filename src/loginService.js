@@ -1,6 +1,6 @@
 let instance = null;
 
-class Login {
+class LoginService {
     constructor(){
         if (!instance) {
             instance = this;
@@ -116,4 +116,4 @@ class Login {
     }
 }
 
-export default Login;
+export default LoginService;
