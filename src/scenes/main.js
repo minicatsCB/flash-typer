@@ -11,6 +11,7 @@ class Main extends Phaser.Scene {
         });
 
         this.loginSrv = new Login();
+        this.loginSrv.setAuthStateObserver(this.authStateChanged.bind(this));
 
         this.loginButton;
         this.logoutButton;
@@ -69,7 +70,7 @@ class Main extends Phaser.Scene {
 
         this.loginButton.visible = false;
 
-        this.logoutButton = this.add.text(rankingText.x, rankingText.y + 100, "Logout from Github", {
+        this.logoutButton = this.add.text(rankingText.x, rankingText.y + 150, "Logout from Github", {
             fill: "#ffffff"
         }).setOrigin(0.5, 0.5);
 
@@ -83,17 +84,15 @@ class Main extends Phaser.Scene {
         this.loginBadge = this.createTextBox(this, 10, this.game.canvas.height - 100);
     }
 
+    authStateChanged(user) {
+        this.loginButton.visible = !user;
+        this.logoutButton.visible = !!user;
+        let loggedInUsername = user ? (user.displayName || "No name") : "Not logged in";
+        this.loginBadge.start(loggedInUsername, 50);
+    }
+
     update() {
-        // ÑapaScript®
-        // Surely there is better way, but currently I don't know any
-        // to subscribe to an observable declared in another script
-        // This is like a "manual" listener or subscription (checking with a loop)
-        if(this.loginSrv.hasAuthStateChanged) {
-            this.loginBadge.start(this.loginSrv.loggedInUsername, 50);
-            this.loginButton.visible = this.loginSrv.isUserLoggedIn ? false : true;
-            this.logoutButton.visible = this.loginSrv.isUserLoggedIn ? true : false;
-            this.loginSrv.hasAuthStateChanged = false;
-        }
+
     }
 
     enterButtonHoverState() {

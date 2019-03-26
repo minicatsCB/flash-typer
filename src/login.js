@@ -3,63 +3,20 @@ let instance = null;
 class Login {
     constructor(){
         if (!instance) {
-            this.loggedInUsername = "Not logged in";
-            this.isUserLoggedIn = false;
-            this.hasAuthStateChanged = false;
-
-            this.setAuthStateObserver();
-
             instance = this;
         }
 
         return instance;
     }
 
-    get loggedInUsername() {
-        return this._loggedInUsername;
-    }
-
-    set loggedInUsername(username) {
-        this._loggedInUsername = username;
-    }
-
-    get isUserLoggedIn() {
-        return this._isUserLoggedIn;
-    }
-
-    set isUserLoggedIn(loginState) {
-        this._isUserLoggedIn = loginState;
-    }
-
-    get hasAuthStateChanged() {
-        return this._hasAuthStateChanged;
-    }
-
-    set hasAuthStateChanged(authState) {
-        this._hasAuthStateChanged = authState;
-    }
-
-    setAuthStateObserver() {
-        firebase.auth().onAuthStateChanged(this.authStateObserver.bind(this));
-    }
-
-    authStateObserver(user) {
-        this.hasAuthStateChanged = true;
-        if (user) {
-            this.loggedInUsername = user.displayName|| "No name";
-            this.isUserLoggedIn = true;
-            console.log("User is signed in as:", this.loggedInUsername);
-        } else {
-            this.loggedInUsername = "Not logged in";
-            this.isUserLoggedIn = false;
-            console.log("User is signed out as:", this.loggedInUsername);
-        }
+    setAuthStateObserver(handler) {
+        firebase.auth().onAuthStateChanged(handler);
     }
 
     signInWithGithub() {
         var provider = new firebase.auth.GithubAuthProvider();
         firebase.auth().signInWithPopup(provider).then(result => {
-            console.log("User signed up with Github succesfully");
+            console.log("User signed in with Github succesfully");
             if (result.additionalUserInfo.isNewUser) {
                 let userData = {
                     email: result.user.email,
