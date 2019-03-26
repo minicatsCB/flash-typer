@@ -6,8 +6,7 @@ class Login {
             this.loggedInUsername = "Not logged in";
             this.isUserLoggedIn = false;
             this.hasAuthStateChanged = false;
-
-            this.initFirebase();
+            
             this.setAuthStateObserver();
 
             instance = this;
@@ -38,17 +37,6 @@ class Login {
 
     set hasAuthStateChanged(authState) {
         this._hasAuthStateChanged = authState;
-    }
-
-    initFirebase() {
-        var config = {
-            apiKey: "AIzaSyDhZLEfkH6ydtLOEBzjQKjCIjnIwtLooQs",
-            authDomain: "flash-typer.firebaseapp.com",
-            databaseURL: "https://flash-typer.firebaseio.com",
-            projectId: "flash-typer",
-        };
-
-        firebase.initializeApp(config);
     }
 
     setAuthStateObserver() {
