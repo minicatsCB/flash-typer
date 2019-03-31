@@ -4,7 +4,9 @@
   "description": "Flash Typer",
   "main": "index.js",
   "dependencies": {
+    "css-loader": "2.1.1",
     "firebase-tools": "6.4.0",
+    "mini-css-extract-plugin": "0.5.0",
     "phaser": "3.16.2",
     "phaser3-rex-plugins": "git+https://github.com/rexrainbow/phaser3-rex-notes.git#e362b38bc6ba8d58ebdfb10285208a514ee83a95"
   },

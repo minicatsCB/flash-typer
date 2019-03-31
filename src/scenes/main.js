@@ -26,23 +26,23 @@ class Main extends Phaser.Scene {
 
         let canvasXMiddle = this.game.canvas.width / 2;
         let titleText = this.add.text(canvasXMiddle, this.game.canvas.height / 4, "Flash Typer", {
-            fontSize: "32px",
-            fill: "#000"
+            fill: "#000000",
+            font: "48px carbontyperegular"
         }).setOrigin(0.5, 0.5);
 
         let instructionsText = this.add.text(canvasXMiddle, titleText.y + 50, "Choose an option by typing it", {
-            fontSize: "16px",
-            fill: "#000"
+            fill: "#000000",
+            font: "16px carbontyperegular"
         }).setOrigin(0.5, 0.5);
 
         let playText = this.add.text(canvasXMiddle, instructionsText.y + 50, "play", {
-            fontSize: "32px",
-            fill: "#000"
+            fill: "#000000",
+            font: "32px carbontyperegular"
         }).setOrigin(0.5, 0.5);
 
         let rankingText = this.add.text(canvasXMiddle, playText.y + 50, "ranking", {
-            fontSize: "32px",
-            fill: "#000"
+            fill: "#000000",
+            font: "32px carbontyperegular"
         }).setOrigin(0.5, 0.5);
 
         this.input.keyboard.createCombo("play");
@@ -61,7 +61,8 @@ class Main extends Phaser.Scene {
         });
 
         this.loginButton = this.add.text(rankingText.x, rankingText.y + 100, "Login with Github", {
-            fill: "#000"
+            fill: "#000000",
+            font: "12px carbontyperegular"
         }).setOrigin(0.5, 0.5);
 
         this.loginButton.setInteractive({ useHandCursor: true });
@@ -72,7 +73,8 @@ class Main extends Phaser.Scene {
         this.loginButton.visible = false;
 
         this.logoutButton = this.add.text(rankingText.x, rankingText.y + 100, "Logout from Github", {
-            fill: "#000"
+            fill: "#000000",
+            font: "12px carbontyperegular"
         }).setOrigin(0.5, 0.5);
 
         this.logoutButton.setInteractive({ useHandCursor: true });
@@ -95,13 +97,13 @@ class Main extends Phaser.Scene {
 
     enterButtonHoverState() {
         this.setStyle({
-            fill: "#ff0000"
+            fill: "#f91616"
         });
     }
 
     enterButtonRestState() {
         this.setStyle({
-            fill: "#ffffff"
+            fill: "#000000"
         });
     }
 
@@ -114,7 +116,8 @@ class Main extends Phaser.Scene {
                 .setStrokeStyle(2, COLOR_LIGHT),
 
             text: scene.add.text(0, 0, this.loginSrv.loggedInUsername, {
-                fill: "#ffffff"
+                fill: "#ffffff",
+                font: "12px carbontyperegular"
             }),
 
             action: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, COLOR_DARK).setAlpha(0),
