@@ -1,7 +1,5 @@
 import LoginService from "../loginService.js";
 
-import mainBackground from "../assets/mainBackground.jpg";
-
 const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;
 const COLOR_DARK = 0x260e04;
@@ -21,11 +19,10 @@ class Main extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("mainBackground", mainBackground);
     }
 
     create() {
-        this.add.image(0, 0, "mainBackground").setOrigin(0, 0);
+        this.cameras.main.setBackgroundColor("#ffffff");
 
         let canvasXMiddle = this.game.canvas.width / 2;
         let titleText = this.add.text(canvasXMiddle, this.game.canvas.height / 4, "Flash Typer", {
