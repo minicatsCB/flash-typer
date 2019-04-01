@@ -1,9 +1,5 @@
 import LoginService from "../loginService.js";
 
-const COLOR_PRIMARY = 0x4e342e;
-const COLOR_LIGHT = 0x7b5e57;
-const COLOR_DARK = 0x260e04;
-
 class Main extends Phaser.Scene {
     constructor() {
         super({
@@ -112,15 +108,15 @@ class Main extends Phaser.Scene {
             x: xPos,
             y: yPos,
 
-            background: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, COLOR_PRIMARY)
-                .setStrokeStyle(2, COLOR_LIGHT),
+            background: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, 0xccbbbb)
+                .setStrokeStyle(2, 0x3f2c2c),
 
             text: scene.add.text(0, 0, this.loginSrv.loggedInUsername, {
                 fill: "#ffffff",
                 font: "12px carbontyperegular"
             }),
 
-            action: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, COLOR_DARK).setAlpha(0),
+            action: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, 0x3f2c2c).setAlpha(0),
 
             space: {
                 left: 20,
