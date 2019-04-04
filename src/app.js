@@ -18,7 +18,7 @@ let webFontLoading = {
 
 let runGame = function() {
     let config = {
-        type: Phaser.CANVAS,
+        type: Phaser.AUTO,
         width: 540,
         heigth: 960,
         physics: {

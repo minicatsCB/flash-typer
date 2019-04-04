@@ -1,5 +1,8 @@
 import LoginService from "../loginService.js";
 
+import lettersTexture from "../assets/letters.png";
+import lettersDescription from "../assets/letters.json";
+
 class Main extends Phaser.Scene {
     constructor() {
         super({
@@ -7,7 +10,6 @@ class Main extends Phaser.Scene {
         });
 
         this.loginSrv = new LoginService();
-        this.loginSrv.setAuthStateObserver(this.authStateChanged.bind(this));
 
         this.loginButton;
         this.logoutButton;
@@ -15,10 +17,34 @@ class Main extends Phaser.Scene {
     }
 
     preload() {
+        this.load.atlas('letters', lettersTexture, lettersDescription);
     }
 
     create() {
         this.cameras.main.setBackgroundColor("#ffffff");
+
+        let emitZone = new Phaser.Geom.Rectangle(0, -10, 540, 20);
+        let letterIndices = Phaser.Utils.Array.NumberArray(1, 25).map(String);
+
+        this.add.particles('letters').createEmitter({
+            alpha: {
+                start: 1,
+                end: 0.25,
+                ease: 'Expo.easeOut'
+            },
+            angle: 0,
+            blendMode: 'MULTIPLY',
+            emitZone: {
+                source: emitZone
+            },
+            frame: letterIndices,
+            frequency: 150,
+            lifespan: 7000,
+            quantity: 1,
+            scale: 0.5,
+            tint: 0x000000,
+            gravityY: 30
+        });
 
         let canvasXMiddle = this.game.canvas.width / 2;
         let titleText = this.add.text(canvasXMiddle, this.game.canvas.height / 4, "Flash Typer", {
@@ -81,6 +107,8 @@ class Main extends Phaser.Scene {
         this.logoutButton.visible = false;
 
         this.loginBadge = this.createTextBox(this, 10, this.game.canvas.height - 100);
+
+        this.loginSrv.setAuthStateObserver(this.authStateChanged.bind(this));
     }
 
     authStateChanged(user) {
