@@ -136,8 +136,8 @@ class Game extends Phaser.Scene {
             this.wordsObject[word] = { isAlive: true };
             let posterImage = this.add.image(0, 0, "sheets", Phaser.Math.Between(1, 6).toString());
             let posterText = this.add.text(0, 0, word, {
-                fontSize: "32px",
                 fill: "#000",
+                font: "32px my_underwoodregular",
                 padding: 20
             });
 
