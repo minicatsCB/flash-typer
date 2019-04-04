@@ -1,10 +1,7 @@
 import LoginService from "../loginService.js";
 
-import rankingBackground from "../assets/rankingBackground.jpg";
-
-const COLOR_PRIMARY = 0x4e342e;
-const COLOR_LIGHT = 0x7b5e57;
-const COLOR_DARK = 0x260e04;
+const COLOR_PRIMARY = 0xccbbbb;
+const COLOR_DARK = 0x3f2c2c;
 
 class Ranking extends Phaser.Scene {
     constructor() {
@@ -21,16 +18,15 @@ class Ranking extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("rankingBackground", rankingBackground);
     }
 
     create() {
-        this.add.image(0, 0, "rankingBackground").setOrigin(0, 0);
+        this.cameras.main.setBackgroundColor("#ffffff");
 
         let canvasXMiddle = this.game.canvas.width / 2;
         let rankingText = this.add.text(canvasXMiddle, 100, "Ranking", {
-            fontSize: "32px",
-            fill: "#fff"
+            fill: "#000000",
+            font: "32px carbontyperegular"
         }).setOrigin(0.5, 0.5);
 
         if (this.loginSrv.user && this.achievedScore) {
@@ -51,7 +47,7 @@ class Ranking extends Phaser.Scene {
             x: xPos,
             y: yPos + 50,
 
-            background: this.rexUI.add.roundRectangle(0, 0, 20, 10, 10, COLOR_PRIMARY),
+            background: this.rexUI.add.roundRectangle(0, 0, 20, 10, 10, COLOR_PRIMARY).setStrokeStyle(2, 0x3f2c2c),
 
             table: {
                 width: 340,
@@ -62,8 +58,8 @@ class Ranking extends Phaser.Scene {
             },
 
             slider: {
-                track: this.rexUI.add.roundRectangle(0, 0, 20, 10, 10, COLOR_DARK),
-                thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 13, COLOR_LIGHT),
+                track: this.rexUI.add.roundRectangle(0, 0, 20, 10, 10, COLOR_PRIMARY).setStrokeStyle(2, 0x3f2c2c),
+                thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 13, COLOR_DARK),
             },
 
             scroller: {
@@ -83,7 +79,9 @@ class Ranking extends Phaser.Scene {
                     height: height,
                     background: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 0).setStrokeStyle(2, COLOR_DARK),
                     icon: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 10, COLOR_DARK),
-                    text: scene.add.text(0, 0, item.displayName + " " + item.achievedScore),
+                    text: scene.add.text(0, 0, item.displayName + " " + item.achievedScore, {
+                        font: "18px my_underwoodregular"
+                    }),
 
                     space: {
                         icon: 10,
@@ -97,8 +95,7 @@ class Ranking extends Phaser.Scene {
 
         })
         .setOrigin(0.5, 0)
-        .layout()
-        .drawBounds(this.add.graphics(), 0xff0000);
+        .layout();
     }
 
     update() {}
