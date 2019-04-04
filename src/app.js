@@ -3,7 +3,7 @@ import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin.js";
 import Main from "./scenes/main.js";
 import Game from "./scenes/game.js";
 import Ranking from "./scenes/ranking.js";
-import myCss from "./assets/fonts/stylesheet.css";
+import fonts from "./assets/fonts/stylesheet.css";
 
 
 let webFontLoading = {
@@ -11,7 +11,7 @@ let webFontLoading = {
 		runGame()
   },
   custom: {
-    families: ['carbontyperegular'],
+    families: ['carbontyperegular', 'my_underwoodregular'],
     urls: ["stylesheet.css"]
   }
 };
