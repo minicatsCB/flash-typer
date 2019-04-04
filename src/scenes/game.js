@@ -1,7 +1,9 @@
 import GameService from "../gameService.js";
 
 import paper from "../assets/paper.png";
-import gameBackground from "../assets/gameBackground.jpg";
+
+import lettersTexture from "../assets/letters.png";
+import lettersDescription from "../assets/letters.json";
 
 class Game extends Phaser.Scene {
     constructor() {
@@ -22,11 +24,34 @@ class Game extends Phaser.Scene {
 
     preload() {
         this.load.image("paper", paper);
-        this.load.image("gameBackground", gameBackground);
+        this.load.atlas('letters', lettersTexture, lettersDescription);
     }
 
     create() {
-        this.add.image(0, 0, "gameBackground").setOrigin(0, 0);
+        this.cameras.main.setBackgroundColor("#ffffff");
+        
+        let emitZone = new Phaser.Geom.Rectangle(0, -10, 540, 20);
+        let letterIndices = Phaser.Utils.Array.NumberArray(1, 25).map(String);
+
+        this.add.particles('letters').createEmitter({
+            alpha: {
+                start: 1,
+                end: 0.25,
+                ease: 'Expo.easeOut'
+            },
+            angle: 0,
+            blendMode: 'MULTIPLY',
+            emitZone: {
+                source: emitZone
+            },
+            frame: letterIndices,
+            frequency: 150,
+            lifespan: 7000,
+            quantity: 1,
+            scale: 0.5,
+            tint: 0x000000,
+            gravityY: 30
+        });
 
         let iter = this.createPoster();
         clearInterval(this.posterCreationInterval);  // Stop any previous started interval
