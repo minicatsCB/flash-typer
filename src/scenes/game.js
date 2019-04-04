@@ -5,6 +5,9 @@ import paper from "../assets/paper.png";
 import lettersTexture from "../assets/letters.png";
 import lettersDescription from "../assets/letters.json";
 
+import sheetsTexture from "../assets/sheets.png";
+import sheetsDescription from "../assets/sheets.json";
+
 class Game extends Phaser.Scene {
     constructor() {
         super({
@@ -25,6 +28,7 @@ class Game extends Phaser.Scene {
     preload() {
         this.load.image("paper", paper);
         this.load.atlas('letters', lettersTexture, lettersDescription);
+        this.load.atlas('sheets', sheetsTexture, sheetsDescription);
     }
 
     create() {
@@ -130,7 +134,7 @@ class Game extends Phaser.Scene {
         let index = 0;
         for(let word of this.currentLevel.wordList) {
             this.wordsObject[word] = { isAlive: true };
-            let posterImage = this.add.image(0, 0, "paper");
+            let posterImage = this.add.image(0, 0, "sheets", Phaser.Math.Between(1, 6).toString());
             let posterText = this.add.text(0, 0, word, {
                 fontSize: "32px",
                 fill: "#000",
