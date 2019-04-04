@@ -1,5 +1,7 @@
 import LoginService from "../loginService.js";
 
+import prizesTexture from "../assets/prizes.png";
+
 const COLOR_PRIMARY = 0xccbbbb;
 const COLOR_DARK = 0x3f2c2c;
 
@@ -11,6 +13,7 @@ class Ranking extends Phaser.Scene {
 
         this.loginSrv = new LoginService();
         this.achievedScore = 0;
+        this.background;
     }
 
     init(data){
@@ -18,10 +21,13 @@ class Ranking extends Phaser.Scene {
     }
 
     preload() {
+        this.load.image('prizes', prizesTexture);
     }
 
     create() {
         this.cameras.main.setBackgroundColor("#ffffff");
+
+        this.background = this.add.tileSprite(0, 0, this.game.canvas.width, this.game.canvas.height, 'prizes').setOrigin(0, 0);
 
         let canvasXMiddle = this.game.canvas.width / 2;
         let rankingText = this.add.text(canvasXMiddle, 100, "Ranking", {
@@ -98,7 +104,10 @@ class Ranking extends Phaser.Scene {
         .layout();
     }
 
-    update() {}
+    update() {
+        this.background.tilePositionX -= 0.05;
+        this.background.tilePositionY += 0.05;
+    }
 }
 
 export default Ranking;
