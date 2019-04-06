@@ -64,9 +64,9 @@ class Game extends Phaser.Scene {
         }, 1000);
 
         // The text to be shown in the score area
-        this.scoreText = this.add.text(16, 16, "Score: " + this.gameService.getCurrentScore(), {
-            fontSize: "32px",
-            fill: "#fff"
+        this.scoreText = this.add.text(16, 16, this.gameService.getCurrentScore(), {
+            font: "64px dialtoneregular",
+            fill: "#000000"
         });
 
         // The text to be shown in the lives area
@@ -87,7 +87,7 @@ class Game extends Phaser.Scene {
                 this.combos[typedWord].destroy();
                 let updatedScore = this.gameService.getCurrentScore() + 10;
                 this.gameService.setScore(updatedScore);
-                this.scoreText.setText("Score: " + this.gameService.getCurrentScore());
+                this.scoreText.setText(this.gameService.getCurrentScore());
             }
         });
 
