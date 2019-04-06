@@ -11,7 +11,7 @@ let webFontLoading = {
 		runGame()
   },
   custom: {
-    families: ['carbontyperegular', 'my_underwoodregular'],
+    families: ['carbontyperegular', 'my_underwoodregular', 'dialtoneregular'],
     urls: ["stylesheet.css"]
   }
 };
