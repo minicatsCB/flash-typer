@@ -14,6 +14,7 @@ class Ranking extends Phaser.Scene {
         this.loginSrv = new LoginService();
         this.achievedScore = 0;
         this.background;
+        this.currentUserDisplayName;
     }
 
     init(data){
@@ -38,6 +39,7 @@ class Ranking extends Phaser.Scene {
         if (this.loginSrv.user && this.achievedScore) {
             this.loginSrv.saveUserScoreInDatabase(this.achievedScore).then(() => {
                 this.loginSrv.getUsersRanking().then(users => {
+                    this.currentUserDisplayName = this.loginSrv.user.displayName;
                     this.createRanking(rankingText.x, rankingText.y, users);
                 });
             });
@@ -83,7 +85,7 @@ class Ranking extends Phaser.Scene {
                 return scene.rexUI.add.label({
                     width: width,
                     height: height,
-                    background: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 0).setStrokeStyle(2, COLOR_DARK),
+                    background: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 0, item.displayName === scene.currentUserDisplayName ? COLOR_DARK : COLOR_PRIMARY).setStrokeStyle(2, COLOR_DARK),
                     icon: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 10, COLOR_DARK),
                     text: scene.add.text(0, 0, item.displayName + " " + item.achievedScore, {
                         font: "18px my_underwoodregular"
