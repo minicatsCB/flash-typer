@@ -1,6 +1,7 @@
 import GameService from "../gameService.js";
 
 import paper from "../assets/paper.png";
+import heart from "../assets/heart.png";
 
 import lettersTexture from "../assets/letters.png";
 import lettersDescription from "../assets/letters.json";
@@ -27,6 +28,7 @@ class Game extends Phaser.Scene {
 
     preload() {
         this.load.image("paper", paper);
+        this.load.image("heart", heart);
         this.load.atlas('letters', lettersTexture, lettersDescription);
         this.load.atlas('sheets', sheetsTexture, sheetsDescription);
     }
@@ -70,10 +72,12 @@ class Game extends Phaser.Scene {
         });
 
         // The text to be shown in the lives area
-        this.livesText = this.add.text(160, 16, "Lives: " + this.gameService.getCurrentLives(), {
-            fontSize: "32px",
-            fill: "#fff"
+        this.livesText = this.add.text(16, 70, this.gameService.getCurrentLives(), {
+            font: "64px dialtoneregular",
+            fill: "#000000"
         });
+
+        this.add.image(64, 90, "heart");
 
         // This will listen for a WHOLE word to be typed
         this.input.keyboard.on("keycombomatch", (event) => {
@@ -126,7 +130,7 @@ class Game extends Phaser.Scene {
         let currentLives = this.gameService.getCurrentLives();
         currentLives = (currentLives <= 0) ? 0 : --currentLives;
         this.gameService.setLives(currentLives);
-        this.livesText.setText("Lives: " + this.gameService.getCurrentLives());
+        this.livesText.setText(this.gameService.getCurrentLives());
     }
 
     // A poster is an image and the specific word put together as a group
