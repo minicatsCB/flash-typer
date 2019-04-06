@@ -2,6 +2,7 @@ import GameService from "../gameService.js";
 
 import paper from "../assets/paper.png";
 import heart from "../assets/heart.png";
+import doubleDownArrow from "../assets/double_arrow_down.png";
 
 import lettersTexture from "../assets/letters.png";
 import lettersDescription from "../assets/letters.json";
@@ -29,6 +30,7 @@ class Game extends Phaser.Scene {
     preload() {
         this.load.image("paper", paper);
         this.load.image("heart", heart);
+        this.load.image("doubleDownArrow", doubleDownArrow);
         this.load.atlas('letters', lettersTexture, lettersDescription);
         this.load.atlas('sheets', sheetsTexture, sheetsDescription);
     }
@@ -57,6 +59,23 @@ class Game extends Phaser.Scene {
             scale: 0.5,
             tint: 0x000000,
             gravityY: 30
+        });
+
+        let arrow1 = this.add.image(this.game.canvas.width / 5, 20, "doubleDownArrow");
+        let arrow2 = this.add.image(this.game.canvas.width / 2, 20, "doubleDownArrow");
+        let arrow3 = this.add.image(this.game.canvas.width - (this.game.canvas.width / 5), 20, "doubleDownArrow");
+        let arrows = [arrow1, arrow2, arrow3];
+
+        this.tweens.add({
+            targets: arrows,
+            ease: 'Sine.easeInOut',
+            duration: 1000,
+            alpha: {
+                getStart: () => 0,
+                getEnd: () => 1
+            },
+            yoyo: true,
+            repeat: 2
         });
 
         let iter = this.createPoster();
