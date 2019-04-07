@@ -188,7 +188,7 @@ class Game extends Phaser.Scene {
             posterImage.displayHeight = posterText.getBounds().height;
 
             // Put the poster randomly at the canvas top
-            let randomX = Phaser.Math.Between(0, this.game.canvas.width);
+            let randomX = Phaser.Math.Between(posterImage.displayWidth / 2, this.game.canvas.width - (posterImage.displayWidth / 2));
             let randomY = Phaser.Math.Between(-(posterImage.displayHeight / 2), -(posterImage.displayHeight) * 2);
 
             // Create the poster itself by grouping both image and text in a "container"
