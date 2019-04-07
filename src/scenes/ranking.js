@@ -37,17 +37,25 @@ class Ranking extends Phaser.Scene {
         }).setOrigin(0.5, 0.5);
 
         if (this.loginSrv.user && this.achievedScore) {
+            this.currentUserDisplayName = this.loginSrv.user.displayName || "No name";
             this.loginSrv.saveUserScoreInDatabase(this.achievedScore).then(() => {
                 this.loginSrv.getUsersRanking().then(users => {
-                    this.currentUserDisplayName = this.loginSrv.user.displayName;
                     this.createRanking(rankingText.x, rankingText.y, users);
                 });
             });
+        } else if(this.loginSrv.user) {
+            this.currentUserDisplayName = this.loginSrv.user.displayName || "No name";
+            this.loginSrv.getUsersRanking().then(users => {
+                this.createRanking(rankingText.x, rankingText.y, users);
+            });
         } else {
+            this.currentUserDisplayName = "Not logged in";
             this.loginSrv.getUsersRanking().then(users => {
                 this.createRanking(rankingText.x, rankingText.y, users);
             });
         }
+
+        this.createTextBox(this, 10, this.game.canvas.height - 100).start(this.currentUserDisplayName, 50);
     }
 
     createRanking(xPos, yPos, users) {
@@ -104,6 +112,56 @@ class Ranking extends Phaser.Scene {
         })
         .setOrigin(0.5, 0)
         .layout();
+    }
+
+    createTextBox(scene, xPos, yPos) {
+        let textBox = scene.rexUI.add.textBox({
+            x: xPos,
+            y: yPos,
+
+            background: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, 0xccbbbb)
+                .setStrokeStyle(2, 0x3f2c2c),
+
+            text: scene.add.text(0, 0, this.loginSrv.loggedInUsername, {
+                fill: "#ffffff",
+                font: "12px carbontyperegular"
+            }),
+
+            action: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, 0x3f2c2c).setAlpha(0),
+
+            space: {
+                left: 20,
+                right: 20,
+                top: 20,
+                bottom: 20,
+                icon: 10,
+                text: 10,
+            }
+        })
+        .setOrigin(0)
+        .layout();
+
+        textBox
+            .setInteractive()
+            .on("pointerdown", function() {
+                if (this.isTyping) {
+                    this.stop(true);
+                }
+            }, textBox)
+            .on("pageend", function() {
+                let icon = this.getElement("action").setAlpha(1);
+                icon.y -= 30;
+                scene.tweens.add({
+                    targets: icon,
+                    y: "+=30",
+                    ease: "Cubic",
+                    duration: 500,
+                    repeat: 0,
+                    yoyo: false
+                });
+            }, textBox);
+
+        return textBox;
     }
 
     update() {
