@@ -78,6 +78,22 @@ class Game extends Phaser.Scene {
             repeat: 2
         });
 
+        let levelWarning = this.add.text(this.game.canvas.width / 2, this.game.canvas.height / 2, "Level " + this.currentLevel.name, {
+            font: "32px my_underwoodregular",
+            fill: "#000000"
+        }).setOrigin(0.5, 0.5);
+
+        this.tweens.add({
+            targets: levelWarning,
+            ease: 'Sine.easeInOut',
+            duration: 1000,
+            alpha: {
+                getStart: () => 0,
+                getEnd: () => 1
+            },
+            yoyo: true
+        });
+
         let iter = this.createPoster();
         clearInterval(this.posterCreationInterval);  // Stop any previous started interval
         this.posterCreationInterval = setInterval(() => {
