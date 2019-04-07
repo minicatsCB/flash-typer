@@ -56,6 +56,9 @@ class Ranking extends Phaser.Scene {
         }
 
         this.createTextBox(this, 10, this.game.canvas.height - 100).start(this.currentUserDisplayName, 50);
+        if(this.currentUserDisplayName === "Not logged in") {
+            this.createAnimatedText(this, 10, this.game.canvas.height - 120).start("Your score will not be saved :(", 50);
+        }
     }
 
     createRanking(xPos, yPos, users) {
@@ -161,6 +164,37 @@ class Ranking extends Phaser.Scene {
                 });
             }, textBox);
 
+        return textBox;
+    }
+
+    createAnimatedText(scene, xPos, yPos) {
+        let textBox = scene.rexUI.add.textBox({
+            x: xPos,
+            y: yPos,
+
+            text: scene.add.text(0, 0, this.loginSrv.loggedInUsername, {
+                fill: "#f91616",
+                font: "10px carbontyperegular"
+            }),
+
+            space: {
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0,
+                text: 10,
+            }
+        })
+        .setOrigin(0)
+        .layout();
+
+        textBox
+            .setInteractive()
+            .on("pointerdown", function() {
+                if (this.isTyping) {
+                    this.stop(true);
+                }
+            }, textBox)
         return textBox;
     }
 
