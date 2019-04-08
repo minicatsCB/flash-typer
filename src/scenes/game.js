@@ -37,7 +37,7 @@ class Game extends Phaser.Scene {
 
     create() {
         this.cameras.main.setBackgroundColor("#ffffff");
-        
+
         let emitZone = new Phaser.Geom.Rectangle(0, -10, 540, 20);
         let letterIndices = Phaser.Utils.Array.NumberArray(1, 25).map(String);
 
@@ -93,6 +93,9 @@ class Game extends Phaser.Scene {
             },
             yoyo: true
         });
+
+        // Shuffle word list
+        this.shuffle(this.currentLevel.wordList);
 
         let iter = this.createPoster();
         clearInterval(this.posterCreationInterval);  // Stop any previous started interval
@@ -210,6 +213,14 @@ class Game extends Phaser.Scene {
 
             index++;
             yield container;
+        }
+    }
+
+    // See: https://stackoverflow.com/a/6274381
+    shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
         }
     }
 }
