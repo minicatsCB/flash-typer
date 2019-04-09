@@ -110,7 +110,7 @@ class Main extends Phaser.Scene {
         this.logoutButton.visible = false;
 
         this.loginBadge = this.utils.createTextBox(this, 10, this.game.canvas.height - 100, this.loginSrv.loggedInUsername);
-        this.logoutWarning = this.createAnimatedText(this, 10, this.game.canvas.height - 120);
+        this.logoutWarning = this.utils.createAnimatedText(this, 10, this.game.canvas.height - 120, this.loginSrv.loggedInUsername);
 
         this.loginSrv.setAuthStateObserver(this.authStateChanged.bind(this));
     }
@@ -135,37 +135,6 @@ class Main extends Phaser.Scene {
         this.setStyle({
             fill: "#000000"
         });
-    }
-
-    createAnimatedText(scene, xPos, yPos) {
-        let textBox = scene.rexUI.add.textBox({
-            x: xPos,
-            y: yPos,
-
-            text: scene.add.text(0, 0, this.loginSrv.loggedInUsername, {
-                fill: "#f91616",
-                font: "10px carbontyperegular"
-            }),
-
-            space: {
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0,
-                text: 10,
-            }
-        })
-        .setOrigin(0)
-        .layout();
-
-        textBox
-            .setInteractive()
-            .on("pointerdown", function() {
-                if (this.isTyping) {
-                    this.stop(true);
-                }
-            }, textBox)
-        return textBox;
     }
 }
 
