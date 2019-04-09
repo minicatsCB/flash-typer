@@ -1,5 +1,6 @@
 import LoginService from "../loginService.js";
 
+import loadingSpinner from "../assets/spinner.png";
 import prizesTexture from "../assets/prizes.png";
 
 const COLOR_PRIMARY = 0xccbbbb;
@@ -23,6 +24,7 @@ class Ranking extends Phaser.Scene {
 
     preload() {
         this.load.image('prizes', prizesTexture);
+        this.load.image('loadingSpinner', loadingSpinner);
     }
 
     create() {
@@ -36,21 +38,32 @@ class Ranking extends Phaser.Scene {
             font: "32px carbontyperegular"
         }).setOrigin(0.5, 0.5);
 
+        let spinner = this.add.image(this.game.canvas.width / 2, this.game.canvas.height / 2, "loadingSpinner");
+        this.tweens.add({
+            targets: spinner,
+            angle: 360,
+            repeat: -1,
+            duration: 3000
+        });
+
         if (this.loginSrv.user && this.achievedScore) {
             this.currentUserDisplayName = this.loginSrv.user.displayName || "No name";
             this.loginSrv.saveUserScoreInDatabase(this.achievedScore).then(() => {
                 this.loginSrv.getUsersRanking().then(users => {
+                    spinner.visible = false;
                     this.createRanking(rankingText.x, rankingText.y, users);
                 });
             });
         } else if(this.loginSrv.user) {
             this.currentUserDisplayName = this.loginSrv.user.displayName || "No name";
             this.loginSrv.getUsersRanking().then(users => {
+                spinner.visible = false;
                 this.createRanking(rankingText.x, rankingText.y, users);
             });
         } else {
             this.currentUserDisplayName = "Not logged in";
             this.loginSrv.getUsersRanking().then(users => {
+                spinner.visible = false;
                 this.createRanking(rankingText.x, rankingText.y, users);
             });
         }
