@@ -1,4 +1,5 @@
 import GameService from "../gameService.js";
+import Utils from "../utils.js";
 
 import paper from "../assets/paper.png";
 import heart from "../assets/heart.png";
@@ -16,6 +17,7 @@ class Game extends Phaser.Scene {
             key: "game"
         });
 
+        this.utils = new Utils();
         this.gameService = new GameService();
         this.currentLevel = this.gameService.getLevelByDifficulty("easy");
 
@@ -40,26 +42,7 @@ class Game extends Phaser.Scene {
 
         let emitZone = new Phaser.Geom.Rectangle(0, -10, 540, 20);
         let letterIndices = Phaser.Utils.Array.NumberArray(1, 25).map(String);
-
-        this.add.particles('letters').createEmitter({
-            alpha: {
-                start: 1,
-                end: 0.25,
-                ease: 'Expo.easeOut'
-            },
-            angle: 0,
-            blendMode: 'MULTIPLY',
-            emitZone: {
-                source: emitZone
-            },
-            frame: letterIndices,
-            frequency: 150,
-            lifespan: 7000,
-            quantity: 1,
-            scale: 0.5,
-            tint: 0x000000,
-            gravityY: 30
-        });
+        this.utils.createParticles(this, "letters", emitZone, letterIndices);
 
         let arrow1 = this.add.image(this.game.canvas.width / 5, 20, "doubleDownArrow");
         let arrow2 = this.add.image(this.game.canvas.width / 2, 20, "doubleDownArrow");
