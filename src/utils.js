@@ -85,6 +85,28 @@ class Utils extends Phaser.Scene {
             }, textBox)
         return textBox;
     }
+
+    createParticles(scene, atlas, source, frames) {
+        return scene.add.particles(atlas).createEmitter({
+            alpha: {
+                start: 1,
+                end: 0.25,
+                ease: 'Expo.easeOut'
+            },
+            angle: 0,
+            blendMode: 'MULTIPLY',
+            emitZone: {
+                source: source
+            },
+            frame: frames,
+            frequency: 150,
+            lifespan: 7000,
+            quantity: 1,
+            scale: 0.5,
+            tint: 0x000000,
+            gravityY: 30
+        });
+    }
 }
 
 export default Utils;

@@ -28,26 +28,7 @@ class Main extends Phaser.Scene {
 
         let emitZone = new Phaser.Geom.Rectangle(0, -10, 540, 20);
         let letterIndices = Phaser.Utils.Array.NumberArray(1, 25).map(String);
-
-        this.add.particles('letters').createEmitter({
-            alpha: {
-                start: 1,
-                end: 0.25,
-                ease: 'Expo.easeOut'
-            },
-            angle: 0,
-            blendMode: 'MULTIPLY',
-            emitZone: {
-                source: emitZone
-            },
-            frame: letterIndices,
-            frequency: 150,
-            lifespan: 7000,
-            quantity: 1,
-            scale: 0.5,
-            tint: 0x000000,
-            gravityY: 30
-        });
+        this.utils.createParticles(this, "letters", emitZone, letterIndices);
 
         let canvasXMiddle = this.game.canvas.width / 2;
         let titleText = this.add.text(canvasXMiddle, this.game.canvas.height / 4, "Flash Typer", {
