@@ -1,4 +1,5 @@
 import LoginService from "../loginService.js";
+import Utils from "../utils.js";
 
 import lettersTexture from "../assets/letters.png";
 import lettersDescription from "../assets/letters.json";
@@ -9,6 +10,7 @@ class Main extends Phaser.Scene {
             key: "main"
         });
 
+        this.utils = new Utils();
         this.loginSrv = new LoginService();
 
         this.loginButton;
@@ -107,7 +109,7 @@ class Main extends Phaser.Scene {
 
         this.logoutButton.visible = false;
 
-        this.loginBadge = this.createTextBox(this, 10, this.game.canvas.height - 100);
+        this.loginBadge = this.utils.createTextBox(this, 10, this.game.canvas.height - 100, this.loginSrv.loggedInUsername);
         this.logoutWarning = this.createAnimatedText(this, 10, this.game.canvas.height - 120);
 
         this.loginSrv.setAuthStateObserver(this.authStateChanged.bind(this));
@@ -133,56 +135,6 @@ class Main extends Phaser.Scene {
         this.setStyle({
             fill: "#000000"
         });
-    }
-
-    createTextBox(scene, xPos, yPos) {
-        let textBox = scene.rexUI.add.textBox({
-            x: xPos,
-            y: yPos,
-
-            background: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, 0xccbbbb)
-                .setStrokeStyle(2, 0x3f2c2c),
-
-            text: scene.add.text(0, 0, this.loginSrv.loggedInUsername, {
-                fill: "#ffffff",
-                font: "12px carbontyperegular"
-            }),
-
-            action: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, 0x3f2c2c).setAlpha(0),
-
-            space: {
-                left: 20,
-                right: 20,
-                top: 20,
-                bottom: 20,
-                icon: 10,
-                text: 10,
-            }
-        })
-        .setOrigin(0)
-        .layout();
-
-        textBox
-            .setInteractive()
-            .on("pointerdown", function() {
-                if (this.isTyping) {
-                    this.stop(true);
-                }
-            }, textBox)
-            .on("pageend", function() {
-                let icon = this.getElement("action").setAlpha(1);
-                icon.y -= 30;
-                scene.tweens.add({
-                    targets: icon,
-                    y: "+=30",
-                    ease: "Cubic",
-                    duration: 500,
-                    repeat: 0,
-                    yoyo: false
-                });
-            }, textBox);
-
-        return textBox;
     }
 
     createAnimatedText(scene, xPos, yPos) {
