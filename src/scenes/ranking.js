@@ -1,4 +1,5 @@
 import LoginService from "../loginService.js";
+import Utils from "../utils.js";
 
 import loadingSpinner from "../assets/spinner.png";
 import prizesTexture from "../assets/prizes.png";
@@ -12,6 +13,7 @@ class Ranking extends Phaser.Scene {
             key: "ranking"
         });
 
+        this.utils = new Utils();
         this.loginSrv = new LoginService();
         this.achievedScore = 0;
         this.background;
@@ -68,9 +70,9 @@ class Ranking extends Phaser.Scene {
             });
         }
 
-        this.createTextBox(this, 10, this.game.canvas.height - 100).start(this.currentUserDisplayName, 50);
+        this.utils.createTextBox(this, 10, this.game.canvas.height - 100).start(this.currentUserDisplayName, 50);
         if(this.currentUserDisplayName === "Not logged in") {
-            this.createAnimatedText(this, 10, this.game.canvas.height - 120).start("Your score will not be saved :(", 50);
+            this.utils.createAnimatedText(this, 10, this.game.canvas.height - 120).start("Your score will not be saved :(", 50);
         }
     }
 
@@ -128,92 +130,6 @@ class Ranking extends Phaser.Scene {
         })
         .setOrigin(0.5, 0)
         .layout();
-    }
-
-    createTextBox(scene, xPos, yPos) {
-        let textBox = scene.rexUI.add.textBox({
-            x: xPos,
-            y: yPos,
-
-            background: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, 0xccbbbb)
-                .setStrokeStyle(2, 0x3f2c2c),
-
-            text: scene.add.text(0, 0, this.loginSrv.loggedInUsername, {
-                fill: "#ffffff",
-                font: "12px carbontyperegular"
-            }),
-
-            action: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, 0x3f2c2c).setAlpha(0),
-
-            space: {
-                left: 20,
-                right: 20,
-                top: 20,
-                bottom: 20,
-                icon: 10,
-                text: 10,
-            }
-        })
-        .setOrigin(0)
-        .layout();
-
-        textBox
-            .setInteractive()
-            .on("pointerdown", function() {
-                if (this.isTyping) {
-                    this.stop(true);
-                }
-            }, textBox)
-            .on("pageend", function() {
-                let icon = this.getElement("action").setAlpha(1);
-                icon.y -= 30;
-                scene.tweens.add({
-                    targets: icon,
-                    y: "+=30",
-                    ease: "Cubic",
-                    duration: 500,
-                    repeat: 0,
-                    yoyo: false
-                });
-            }, textBox);
-
-        return textBox;
-    }
-
-    createAnimatedText(scene, xPos, yPos) {
-        let textBox = scene.rexUI.add.textBox({
-            x: xPos,
-            y: yPos,
-
-            text: scene.add.text(0, 0, this.loginSrv.loggedInUsername, {
-                fill: "#f91616",
-                font: "10px carbontyperegular"
-            }),
-
-            space: {
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0,
-                text: 10,
-            }
-        })
-        .setOrigin(0)
-        .layout();
-
-        textBox
-            .setInteractive()
-            .on("pointerdown", function() {
-                if (this.isTyping) {
-                    this.stop(true);
-                }
-            }, textBox)
-        return textBox;
-    }
-
-    update() {
-        this.background.tilePositionX -= 0.05;
-        this.background.tilePositionY += 0.05;
     }
 }
 
