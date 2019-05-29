@@ -40,6 +40,7 @@ class Ranking extends Phaser.Scene {
             font: "32px carbontyperegular"
         }).setOrigin(0.5, 0.5);
 
+        // Show a loading spinner while we receive the data from the server
         let spinner = this.add.image(this.game.canvas.width / 2, this.game.canvas.height / 2, "loadingSpinner");
         this.tweens.add({
             targets: spinner,
@@ -47,10 +48,11 @@ class Ranking extends Phaser.Scene {
             repeat: -1,
             duration: 3000
         });
-
+        
         if (this.loginSrv.user && this.achievedScore) {
             this.currentUserDisplayName = this.loginSrv.user.displayName || "No name";
             this.loginSrv.saveUserScoreInDatabase(this.achievedScore).then(() => {
+                // Show ranking table if the user is logged in and has played (she accessed the ranking from the Game scene)
                 this.loginSrv.getUsersRanking().then(users => {
                     spinner.visible = false;
                     this.createRanking(rankingText.x, rankingText.y, users);
@@ -58,18 +60,22 @@ class Ranking extends Phaser.Scene {
             });
         } else if(this.loginSrv.user) {
             this.currentUserDisplayName = this.loginSrv.user.displayName || "No name";
+            // Show ranking table if the user is logged in but hasn't played (she has accessed the ranking directly from the Main scene)
             this.loginSrv.getUsersRanking().then(users => {
                 spinner.visible = false;
                 this.createRanking(rankingText.x, rankingText.y, users);
             });
         } else {
+            // The displayed username will be "Not logged in" for not logged in users
             this.currentUserDisplayName = "Not logged in";
+            // Show ranking table if the user isn't logged in, doesn't mind where she has played or not
             this.loginSrv.getUsersRanking().then(users => {
                 spinner.visible = false;
                 this.createRanking(rankingText.x, rankingText.y, users);
             });
         }
 
+        // Create login badge
         this.utils.createTextBox(this, 10, this.game.canvas.height - 100).start(this.currentUserDisplayName, 50);
         if(this.currentUserDisplayName === "Not logged in") {
             this.utils.createAnimatedText(this, 10, this.game.canvas.height - 120).start("Your score will not be saved :(", 50);

@@ -44,11 +44,13 @@ class Game extends Phaser.Scene {
         let letterIndices = Phaser.Utils.Array.NumberArray(1, 25).map(String);
         this.utils.createParticles(this, "letters", emitZone, letterIndices);
 
+        // Put some visual indicators at the top of the screen
         let arrow1 = this.add.image(this.game.canvas.width / 5, 20, "doubleDownArrow");
         let arrow2 = this.add.image(this.game.canvas.width / 2, 20, "doubleDownArrow");
         let arrow3 = this.add.image(this.game.canvas.width - (this.game.canvas.width / 5), 20, "doubleDownArrow");
         let arrows = [arrow1, arrow2, arrow3];
 
+        // Animate the indicators
         this.tweens.add({
             targets: arrows,
             ease: 'Sine.easeInOut',
@@ -61,11 +63,13 @@ class Game extends Phaser.Scene {
             repeat: 2
         });
 
+        // Show the user the level she/he just entered
         let levelWarning = this.add.text(this.game.canvas.width / 2, this.game.canvas.height / 2, "Level " + this.currentLevel.name, {
             font: "32px my_underwoodregular",
             fill: "#000000"
         }).setOrigin(0.5, 0.5);
 
+        // Animate the previous level message
         this.tweens.add({
             targets: levelWarning,
             ease: 'Sine.easeInOut',
@@ -77,7 +81,7 @@ class Game extends Phaser.Scene {
             yoyo: true
         });
 
-        // Shuffle word list
+        // Shuffle the word list
         this.utils.shuffle(this.currentLevel.wordList);
 
         let iter = this.createPoster();
