@@ -3,6 +3,10 @@ It's a game developed in JavaScript which challenges your speed and skills with 
 
 (Note for the Spaniards of the Tuenti era: this game is inspired in one that existed in this social network ;)).
 
+🇩 🇪 🇲 🇴
+
+<img src="https://github.com/minicatsCB/flash-typer/blob/master/demo.gif" width="268" height="461" />
+
 ## Starting the game
 In the main menu screen, you'll see that you can log in with Github or play as a guest. If you log in, your score will be saved and will appear in the ranking. If not, your score will not be saved. To log in, just **click** the "Login with Github" button and wait to see the login badge at the left bottom part of the screen to appear.
 
