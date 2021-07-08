@@ -1,0 +1,29 @@
+{
+  "name": "flash-typer",
+  "version": "1.0.0",
+  "description": "Flash Typer",
+  "main": "index.js",
+  "dependencies": {
+    "firebase-tools": "^6.4.0",
+    "phaser": "^3.16.2",
+    "phaser3-rex-plugins": "git+https://github.com/rexrainbow/phaser3-rex-notes.git"
+  },
+  "devDependencies": {
+    "file-loader": "^3.0.1",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/minicatsCB/flash-typer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/minicatsCB/flash-typer/issues"
+  },
+  "homepage": "https://github.com/minicatsCB/flash-typer#readme"
+}
